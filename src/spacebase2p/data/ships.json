@@ -1,0 +1,51 @@
+{
+  "level1": [
+    {"id": "L1-6-2g", "sector": 6, "cost": 3, "station": {"gold": 2}, "deployed": {"vp": 1}},
+    {"id": "L1-5-2g", "sector": 5, "cost": 3, "station": {"gold": 2}, "deployed": {"rockets": 1}},
+    {"id": "L1-4-2g", "sector": 4, "cost": 3, "station": {"gold": 2}, "deployed": {"gold": 1}},
+    {"id": "L1-6-inc", "sector": 6, "cost": 3, "station": {"gold": 1, "income": 1}},
+    {"id": "L1-7-inc", "sector": 7, "cost": 3, "station": {"gold": 1, "income": 1}, "deployed": {"income": 1}},
+    {"id": "L1-8-inc", "sector": 8, "cost": 3, "station": {"gold": 2, "income": 1}},
+    {"id": "L1-5-inc", "sector": 5, "cost": 3, "station": {"gold": 1, "income": 1}},
+    {"id": "L1-3-1g", "sector": 3, "cost": 2, "station": {"gold": 1}},
+    {"id": "L1-2-1g", "sector": 2, "cost": 2, "station": {"gold": 1}},
+    {"id": "L1-1-vp", "sector": 1, "cost": 2, "station": {"vp": 1}},
+    {"id": "L1-7-g", "sector": 7, "cost": 3, "station": {"gold": 2}, "deployed": {"vp": 1}},
+    {"id": "L1-5-rkt", "sector": 5, "cost": 3, "station": {"gold": 1}, "deployed": {"rockets": 2}},
+    {"id": "L1-6-rkt", "sector": 6, "cost": 3, "station": {"gold": 1}, "deployed": {"rockets": 2}},
+    {"id": "L1-4-rkt", "sector": 4, "cost": 3, "station": {"gold": 1}, "deployed": {"rockets": 1}},
+    {"id": "L1-8-2g", "sector": 8, "cost": 3, "station": {"gold": 2}},
+    {"id": "L1-9-vp", "sector": 9, "cost": 3, "station": {"vp": 2}},
+    {"id": "L1-10-vp", "sector": 10, "cost": 4, "station": {"vp": 2}},
+    {"id": "L1-6-3g", "sector": 6, "cost": 3, "station": {"gold": 3}, "deployed": {"rockets": 1}}
+  ],
+  "level2": [
+    {"id": "L2-7-arr", "sector": 7, "cost": 5, "station": {"arrow_right": true}},
+    {"id": "L2-8-arr", "sector": 8, "cost": 5, "station": {"arrow_right": true}, "deployed": {"vp": 1}},
+    {"id": "L2-9-arr", "sector": 9, "cost": 6, "station": {"arrow_right": true}},
+    {"id": "L2-10-vp", "sector": 10, "cost": 6, "station": {"vp": 3}, "deployed": {"vp": 2}},
+    {"id": "L2-8-inc2", "sector": 8, "cost": 5, "station": {"gold": 1, "income": 2}},
+    {"id": "L2-6-cargo", "sector": 6, "cost": 4, "station": {"gold": 3}, "deployed": {"rockets": 1}},
+    {"id": "L2-5-cargo", "sector": 5, "cost": 4, "station": {"gold": 3}, "deployed": {"rockets": 1}},
+    {"id": "L2-4-cargo", "sector": 4, "cost": 4, "station": {"gold": 3}, "deployed": {"gold": 1}},
+    {"id": "L2-11-vp", "sector": 11, "cost": 7, "station": {"vp": 4}, "deployed": {"vp": 2}},
+    {"id": "L2-9-gvp", "sector": 9, "cost": 6, "station": {"gold": 2, "vp": 2}, "deployed": {"vp": 1}},
+    {"id": "L2-7-left", "sector": 7, "cost": 5, "station": {"arrow_left": true}},
+    {"id": "L2-6-rkt3", "sector": 6, "cost": 5, "station": {"gold": 2}, "deployed": {"rockets": 3}},
+    {"id": "L2-5-inc", "sector": 5, "cost": 5, "station": {"income": 2, "gold": 1}},
+    {"id": "L2-8-vp", "sector": 8, "cost": 6, "station": {"vp": 2, "gold": 1}},
+    {"id": "L2-12-vp", "sector": 12, "cost": 7, "station": {"vp": 5}, "deployed": {"vp": 2}}
+  ],
+  "level3": [
+    {"id": "L3-9-vp", "sector": 9, "cost": 8, "station": {"vp": 5}, "deployed": {"vp": 3}},
+    {"id": "L3-10-vp", "sector": 10, "cost": 8, "station": {"vp": 6}, "deployed": {"vp": 3}},
+    {"id": "L3-8-inc", "sector": 8, "cost": 7, "station": {"gold": 2, "income": 2}, "deployed": {"income": 1}},
+    {"id": "L3-6-rkt", "sector": 6, "cost": 7, "station": {"gold": 3}, "deployed": {"rockets": 4}},
+    {"id": "L3-11-arr", "sector": 11, "cost": 9, "station": {"vp": 2, "arrow_right": true}, "deployed": {"vp": 2}},
+    {"id": "L3-12-vp", "sector": 12, "cost": 9, "station": {"vp": 7}, "deployed": {"vp": 4}},
+    {"id": "L3-7-chain", "sector": 7, "cost": 7, "station": {"gold": 1, "income": 1, "arrow_right": true}, "deployed": {"vp": 1}},
+    {"id": "L3-5-rkt", "sector": 5, "cost": 6, "station": {"gold": 2}, "deployed": {"rockets": 3}},
+    {"id": "L3-4-gold", "sector": 4, "cost": 6, "station": {"gold": 4}, "deployed": {"gold": 2}},
+    {"id": "L3-10-arr", "sector": 10, "cost": 8, "station": {"vp": 4, "arrow_right": true}, "deployed": {"vp": 2}}
+  ]
+}

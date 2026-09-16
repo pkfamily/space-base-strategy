@@ -31,6 +31,14 @@ python3 -m pytest
 
 Output: win rates, average **overspend** per player, average **first colony turn**.
 
+## Card data
+
+Ships and colonies load from `src/spacebase2p/data/ships.json` and `colonies.json` (sector VP on colonies, expanded L1–L3 pool). Edit JSON and re-run sims — no charge / You Win / Gordon / swap / dice-fix cards.
+
+## Telemetry
+
+Each finished game tracks **rounds**, **VP from colonies vs dice (blue/red)**, **passes**, and **overspend**. Calibration test: rush vs rush median rounds in **14–22** (`tests/test_calibration.py`).
+
 ## Tests
 
 - Dice allocation (singles vs sum)
@@ -38,5 +46,6 @@ Output: win rates, average **overspend** per player, average **first colony turn
 - Income floor after purchase only
 - Colony sector lock
 - Endgame / final turn
+- Rush mirror pace calibration
 
 Source lives in the [GitHub repository](https://github.com/pkfamily/space-base-strategy).

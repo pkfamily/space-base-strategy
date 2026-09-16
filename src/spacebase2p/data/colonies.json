@@ -1,0 +1,14 @@
+[
+  {"sector": 1, "cost": 3, "vp": 1},
+  {"sector": 2, "cost": 3, "vp": 1},
+  {"sector": 3, "cost": 3, "vp": 1},
+  {"sector": 4, "cost": 3, "vp": 2},
+  {"sector": 5, "cost": 3, "vp": 2},
+  {"sector": 6, "cost": 3, "vp": 2},
+  {"sector": 7, "cost": 3, "vp": 3},
+  {"sector": 8, "cost": 3, "vp": 3},
+  {"sector": 9, "cost": 3, "vp": 4},
+  {"sector": 10, "cost": 3, "vp": 4},
+  {"sector": 11, "cost": 3, "vp": 5},
+  {"sector": 12, "cost": 3, "vp": 6}
+]

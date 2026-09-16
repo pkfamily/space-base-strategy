@@ -1,81 +1,72 @@
 from __future__ import annotations
 
+import json
 import random
-from typing import Iterator
+from functools import lru_cache
+from importlib import resources
+from typing import Any
 
 from spacebase2p.models import ColonyOffer, ShipCard, SideEffects
 
-# Representative base-game-style deck (no charge, You Win, Gordon, swap, dice-fix).
+
+def _side(data: dict[str, Any] | None) -> SideEffects:
+    if not data:
+        return SideEffects()
+    return SideEffects(
+        gold=int(data.get("gold", 0)),
+        income=int(data.get("income", 0)),
+        vp=int(data.get("vp", 0)),
+        rockets=int(data.get("rockets", 0)),
+        arrow_left=bool(data.get("arrow_left", False)),
+        arrow_right=bool(data.get("arrow_right", False)),
+    )
 
 
-def _card(
-    cid: str,
-    sector: int,
-    level: int,
-    cost: int,
-    sb: tuple[int, int, int, int, bool, bool],
-    db: tuple[int, int, int, int, bool, bool],
-) -> ShipCard:
-    def side(t: tuple[int, int, int, int, bool, bool]) -> SideEffects:
-        g, inc, vp, rockets, al, ar = t
-        return SideEffects(g, inc, vp, rockets, al, ar)
+def _ship(raw: dict[str, Any], level: int) -> ShipCard:
+    return ShipCard(
+        id=raw["id"],
+        sector=int(raw["sector"]),
+        level=level,
+        cost=int(raw["cost"]),
+        station=_side(raw.get("station")),
+        deployed=_side(raw.get("deployed")),
+    )
 
-    return ShipCard(cid, sector, level, cost, side(sb), side(db))
+
+@lru_cache(maxsize=1)
+def _load_ship_data() -> dict[str, list[ShipCard]]:
+    text = resources.files("spacebase2p.data").joinpath("ships.json").read_text(encoding="utf-8")
+    raw = json.loads(text)
+    return {
+        "level1": [_ship(c, 1) for c in raw["level1"]],
+        "level2": [_ship(c, 2) for c in raw["level2"]],
+        "level3": [_ship(c, 3) for c in raw["level3"]],
+    }
+
+
+@lru_cache(maxsize=1)
+def _load_colony_data() -> list[ColonyOffer]:
+    text = resources.files("spacebase2p.data").joinpath("colonies.json").read_text(encoding="utf-8")
+    raw = json.loads(text)
+    return [ColonyOffer(sector=int(c["sector"]), vp=int(c["vp"]), cost=int(c["cost"])) for c in raw]
 
 
 def level1_deck() -> list[ShipCard]:
-    cards = [
-        _card("L1-6-2g", 6, 1, 3, (2, 0, 0, 0, False, False), (0, 0, 1, 0, False, False)),
-        _card("L1-5-2g", 5, 1, 3, (2, 0, 0, 0, False, False), (0, 0, 0, 1, False, False)),
-        _card("L1-4-2g", 4, 1, 3, (2, 0, 0, 0, False, False), (1, 0, 0, 0, False, False)),
-        _card("L1-6-inc", 6, 1, 3, (1, 1, 0, 0, False, False), (0, 0, 0, 0, False, False)),
-        _card("L1-7-inc", 7, 1, 3, (1, 1, 0, 0, False, False), (0, 1, 0, 0, False, False)),
-        _card("L1-8-inc", 8, 1, 3, (2, 1, 0, 0, False, False), (0, 0, 0, 0, False, False)),
-        _card("L1-3-1g", 3, 1, 2, (1, 0, 0, 0, False, False), (0, 0, 0, 0, False, False)),
-        _card("L1-2-1g", 2, 1, 2, (1, 0, 0, 0, False, False), (0, 0, 0, 0, False, False)),
-        _card("L1-1-vp", 1, 1, 2, (0, 0, 1, 0, False, False), (0, 0, 0, 0, False, False)),
-        _card("L1-7-g", 7, 1, 3, (2, 0, 0, 0, False, False), (0, 0, 1, 0, False, False)),
-        _card("L1-5-rkt", 5, 1, 3, (1, 0, 0, 0, False, False), (0, 0, 0, 2, False, False)),
-        _card("L1-6-rkt", 6, 1, 3, (1, 0, 0, 0, False, False), (0, 0, 0, 2, False, False)),
-    ]
-    return cards
+    return _load_ship_data()["level1"][:]
 
 
 def level2_deck() -> list[ShipCard]:
-    return [
-        _card("L2-7-arr", 7, 2, 5, (0, 0, 0, 0, False, True), (0, 0, 0, 0, False, False)),
-        _card("L2-8-arr", 8, 2, 5, (0, 0, 0, 0, False, True), (0, 0, 1, 0, False, False)),
-        _card("L2-9-arr", 9, 2, 6, (0, 0, 0, 0, False, True), (0, 0, 0, 0, False, False)),
-        _card("L2-10-vp", 10, 2, 6, (0, 0, 3, 0, False, False), (0, 0, 2, 0, False, False)),
-        _card("L2-8-inc2", 8, 2, 5, (1, 2, 0, 0, False, False), (0, 0, 0, 0, False, False)),
-        _card("L2-6-cargo", 6, 2, 4, (3, 0, 0, 0, False, False), (0, 0, 0, 1, False, False)),
-        _card("L2-5-cargo", 5, 2, 4, (3, 0, 0, 0, False, False), (0, 0, 0, 1, False, False)),
-        _card("L2-4-cargo", 4, 2, 4, (3, 0, 0, 0, False, False), (1, 0, 0, 0, False, False)),
-        _card("L2-11-vp", 11, 2, 7, (0, 0, 4, 0, False, False), (0, 0, 2, 0, False, False)),
-        _card("L2-9-gvp", 9, 2, 6, (2, 0, 2, 0, False, False), (0, 0, 1, 0, False, False)),
-        _card("L2-7-left", 7, 2, 5, (0, 0, 0, 0, True, False), (0, 0, 0, 0, False, False)),
-        _card("L2-6-rkt3", 6, 2, 5, (2, 0, 0, 0, False, False), (0, 0, 0, 3, False, False)),
-    ]
+    return _load_ship_data()["level2"][:]
 
 
 def level3_deck() -> list[ShipCard]:
-    return [
-        _card("L3-9-vp", 9, 3, 8, (0, 0, 5, 0, False, False), (0, 0, 3, 0, False, False)),
-        _card("L3-10-vp", 10, 3, 8, (0, 0, 6, 0, False, False), (0, 0, 3, 0, False, False)),
-        _card("L3-8-inc", 8, 3, 7, (2, 2, 0, 0, False, False), (0, 1, 0, 0, False, False)),
-        _card("L3-6-rkt", 6, 3, 7, (3, 0, 0, 0, False, False), (0, 0, 0, 4, False, False)),
-        _card("L3-11-arr", 11, 3, 9, (0, 0, 2, 0, False, True), (0, 0, 2, 0, False, False)),
-        _card("L3-12-vp", 12, 3, 9, (0, 0, 7, 0, False, False), (0, 0, 4, 0, False, False)),
-        _card("L3-7-chain", 7, 3, 7, (1, 1, 0, 0, False, True), (0, 0, 1, 0, False, False)),
-        _card("L3-5-rkt", 5, 3, 6, (2, 0, 0, 0, False, False), (0, 0, 0, 3, False, False)),
-        _card("L3-4-gold", 4, 3, 6, (4, 0, 0, 0, False, False), (2, 0, 0, 0, False, False)),
-    ]
+    return _load_ship_data()["level3"][:]
 
 
 def shuffled_decks(rng: random.Random) -> tuple[list[ShipCard], list[ShipCard], list[ShipCard]]:
-    d1 = level1_deck()[:]
-    d2 = level2_deck()[:]
-    d3 = level3_deck()[:]
+    d1 = level1_deck()
+    d2 = level2_deck()
+    d3 = level3_deck()
     rng.shuffle(d1)
     rng.shuffle(d2)
     rng.shuffle(d3)
@@ -83,9 +74,8 @@ def shuffled_decks(rng: random.Random) -> tuple[list[ShipCard], list[ShipCard], 
 
 
 def colony_offers() -> list[ColonyOffer]:
-    return [ColonyOffer(sector=s, vp=1, cost=3) for s in range(1, 13)]
+    return _load_colony_data()[:]
 
 
 def draw_opening_level1(rng: random.Random) -> ShipCard:
-    deck = level1_deck()
-    return rng.choice(deck)
+    return rng.choice(level1_deck())

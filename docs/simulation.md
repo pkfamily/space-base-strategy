@@ -24,6 +24,14 @@ Batch runs use the [`spacebase2p`](simulator.md) package: base game only, simpli
     <img src="{{ '/assets/plots/pace_colonies.png' | relative_url }}" alt="Game length and first colony turn for income vs rush" />
     <figcaption>Left: average game length. Right: first colony turn in the income vs rush matchup.</figcaption>
   </figure>
+  <figure>
+    <img src="{{ '/assets/plots/turn_histogram.png' | relative_url }}" alt="Histogram of game length for rush vs rush" />
+    <figcaption>rush vs rush — shared rounds (dashed = median, dotted ≈ 20-turn 2p target).</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/plots/vp_sources.png' | relative_url }}" alt="VP from colonies vs dice" />
+    <figcaption>Average VP from colonies vs dice rewards (rush mirror).</figcaption>
+  </figure>
 </div>
 
 ## Numbers (latest batch)

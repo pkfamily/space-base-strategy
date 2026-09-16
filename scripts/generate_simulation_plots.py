@@ -91,6 +91,45 @@ def plot_overspend(results) -> None:
     plt.close(fig)
 
 
+def plot_turn_histogram(results) -> None:
+    rush = next(r for r in results if r.p0 == "rush" and r.p1 == "rush")
+    turns = rush.turn_samples
+    if not turns:
+        return
+    fig, ax = plt.subplots(figsize=(8, 4.2), layout="constrained")
+    ax.hist(turns, bins=range(min(turns), max(turns) + 2), color=TEAL, edgecolor=GRID, alpha=0.85)
+    med = float(np.median(turns))
+    ax.axvline(med, color=ORANGE, linestyle="--", linewidth=1.2, label=f"median={med:.0f}")
+    ax.axvline(20, color=GOLD, linestyle=":", linewidth=1.0, label="target ~20")
+    ax.set_xlabel("Shared rounds to endgame")
+    ax.set_ylabel("Games")
+    ax.set_title("rush vs rush — game length distribution", color=GOLD, fontsize=12, fontweight="bold")
+    ax.legend(facecolor=PANEL, edgecolor=GRID)
+    ax.grid(axis="y")
+    fig.savefig(OUT / "turn_histogram.png", dpi=144, facecolor=BG)
+    plt.close(fig)
+
+
+def plot_vp_sources(results) -> None:
+    rush = next(r for r in results if r.p0 == "rush" and r.p1 == "rush")
+    labels = ["Colonies P0", "Dice P0", "Colonies P1", "Dice P1"]
+    vals = [
+        rush.avg_vp_colonies_p0,
+        rush.avg_vp_dice_p0,
+        rush.avg_vp_colonies_p1,
+        rush.avg_vp_dice_p1,
+    ]
+    fig, ax = plt.subplots(figsize=(7, 4), layout="constrained")
+    colors = [ORANGE, SKY, TEAL, "#7b9cc7"]
+    ax.bar(labels, vals, color=colors, edgecolor=GRID)
+    ax.set_ylabel("Avg VP per player per game")
+    ax.set_title("VP sources (rush mirror)", color=GOLD, fontsize=12, fontweight="bold")
+    ax.grid(axis="y")
+    plt.setp(ax.get_xticklabels(), rotation=15, ha="right")
+    fig.savefig(OUT / "vp_sources.png", dpi=144, facecolor=BG)
+    plt.close(fig)
+
+
 def plot_pace_colonies(results) -> None:
     key = next(r for r in results if r.p0 == "income" and r.p1 == "rush")
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.2), layout="constrained")
@@ -142,6 +181,11 @@ def write_summary_json(results) -> None:
                 "avg_colony_turn_p0": round(r.avg_colony_turn_p0, 2) if r.avg_colony_turn_p0 else None,
                 "avg_colony_turn_p1": round(r.avg_colony_turn_p1, 2) if r.avg_colony_turn_p1 else None,
                 "avg_vp_margin": round(r.avg_vp_margin, 2),
+                "median_turns": round(r.median_turns, 2),
+                "avg_passes_p0": round(r.avg_passes_p0, 2),
+                "avg_passes_p1": round(r.avg_passes_p1, 2),
+                "avg_vp_colonies_p0": round(r.avg_vp_colonies_p0, 2),
+                "avg_vp_dice_p0": round(r.avg_vp_dice_p0, 2),
             }
             for r in results
         ],
@@ -159,6 +203,8 @@ def main() -> None:
     plot_win_rates(results)
     plot_overspend(results)
     plot_pace_colonies(results)
+    plot_turn_histogram(results)
+    plot_vp_sources(results)
     write_summary_json(results)
     print(f"Wrote plots to {OUT}")
 

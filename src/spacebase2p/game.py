@@ -10,6 +10,7 @@ from spacebase2p.dice import Roll, sector_hits
 from spacebase2p.market import Market
 from spacebase2p.models import AllocationMode, ColonyOffer, PlayerState, ShipCard
 from spacebase2p.rewards import apply_delta, evaluate_roll
+from spacebase2p.telemetry import GameTelemetry, PlayerTelemetry
 
 
 class BuyKind(Enum):
@@ -44,11 +45,8 @@ class Bot(Protocol):
     def choose_buy(self, game: Game, player_idx: int) -> BuyAction: ...
 
 
-@dataclass
-class GameStats:
-    overspend_total: int = 0
-    first_colony_turn: int | None = None
-    colony_purchases: int = 0
+# Back-compat alias
+GameStats = PlayerTelemetry
 
 
 @dataclass
@@ -61,7 +59,7 @@ class Game:
     endgame_triggered: bool = False
     final_turn_player: int | None = None
     game_over: bool = False
-    stats: list[GameStats] = field(default_factory=list)
+    stats: list[PlayerTelemetry] = field(default_factory=list)
     bots: list[Bot] = field(default_factory=list)
 
     @classmethod
@@ -89,7 +87,7 @@ class Game:
             players=[p0, p1],
             market=market,
             active=active,
-            stats=[GameStats(), GameStats()],
+            stats=[PlayerTelemetry(), PlayerTelemetry()],
             bots=bots,
         )
         return game
@@ -119,14 +117,22 @@ class Game:
                 return bot.choose_arrows(self, pidx, options)
 
             sectors_times = [(h.sector, h.times) for h in hits]
+            player = self.players[pidx]
+            vp_before = player.vp
             delta = evaluate_roll(
-                self.players[pidx],
+                player,
                 sectors_times,
                 is_active_turn,
                 mode,
                 arrow_chooser,
             )
-            apply_delta(self.players[pidx], delta)
+            apply_delta(player, delta)
+            vp_gain = player.vp - vp_before
+            if vp_gain > 0:
+                if is_active_turn:
+                    self.stats[pidx].vp_from_dice_blue += vp_gain
+                else:
+                    self.stats[pidx].vp_from_dice_red += vp_gain
             self._check_endgame_trigger(pidx)
 
         buy = self.bots[active_idx].choose_buy(self, active_idx)
@@ -163,6 +169,7 @@ class Game:
     def _resolve_buy(self, pidx: int, action: BuyAction) -> None:
         player = self.players[pidx]
         if action.kind == BuyKind.PASS:
+            self.stats[pidx].pass_count += 1
             return
 
         gold_before = player.gold
@@ -190,6 +197,7 @@ class Game:
             self.stats[pidx].overspend_total += overspend
             _place_colony(player, colony)
             player.vp += colony.vp
+            self.stats[pidx].vp_from_colonies += colony.vp
             self.market.remove_colony(colony)
             self.stats[pidx].colony_purchases += 1
             if self.stats[pidx].first_colony_turn is None:
@@ -204,6 +212,18 @@ class Game:
         while not self.is_finished() and turns < max_turns:
             self.play_turn()
             turns += 1
+
+    def telemetry(self) -> GameTelemetry:
+        winner: int | None = None
+        unfinished = not self.is_finished()
+        if not unfinished:
+            winner = self.winner()
+        return GameTelemetry(
+            rounds=self.turn_number,
+            winner=winner,
+            players=list(self.stats),
+            unfinished=unfinished,
+        )
 
 
 def _station_card(player: PlayerState, card: ShipCard) -> None:
