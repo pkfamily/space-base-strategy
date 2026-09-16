@@ -8,11 +8,11 @@ The rest of this is a table guide: shared engine math first, then four complete 
 
 **Allocation.** Two d6s. You pick both singles or the sum.
 
-- **Doubles** (both dice the same 1–6): that sector fires twice. This is every low sector, not a 6-only trick. Double 4s pay sector 4 twice the same way double 6s pay sector 6 twice.
-- **Two different 1–6 numbers:** taking singles pays both sectors. A 2 and a 5 is two rewards, not one. That is the other way 1–5 double.
+- **Doubles** (both dice the same 1–6): that sector fires twice. Double 6s pay 6 twice. Double 4s pay 4 twice. Same rule for every low sector.
+- **Two different 1–6 numbers:** taking singles pays both sectors. A 2 and a 5 is two rewards. A 6 and a 3 is also two rewards — 6 double-hits this way too.
 - **Sum:** one reward on 2–12.
 
-Sector 6 still has the highest chance to *hit*. 1–5 are a step behind on frequency, but they get the same double rewards whenever both dice come up as that number, and they pair with the other die for two separate payouts whenever you take singles.
+Every 1–6 can double-hit. Sector 6 just does it most often: most faces, leftover sum-to-6s, and the same two-payout singles/doubles as 1–5.
 
 Rough hit rates (singles or sum, no dice fixing; doubles count as two hits on that sector):
 
@@ -31,7 +31,7 @@ Rough hit rates (singles or sum, no dice fixing; doubles count as two hits on th
 | 11     | 2         | 6%     |
 | 12     | 1         | 3%     |
 
-So 1–6 fire constantly and pay small. 7–12 fire rarely and pay huge. Cards are priced around that, but not perfectly: a 6 is noticeably better than a 3 with the same text; an 11 is almost always better than a 12 with similar text. Prefer 6 given equal text — just do not treat 1–5 as “cannot double.” They can, whenever both numbers arise.
+So 1–6 fire constantly and pay small. 7–12 fire rarely and pay huge. Cards are priced around that, but not perfectly: a 6 is noticeably better than a 3 with the same text; an 11 is almost always better than a 12 with similar text. Prefer 6 given equal text because it hits more — not because it is the only sector that can pay twice.
 
 Buying a ship in a sector deploys whatever was there. That is how red engines get built. Sometimes the right buy is a mediocre new ship whose whole job is to flip a strong red.
 
