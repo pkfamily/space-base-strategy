@@ -13,15 +13,6 @@ heading_anchors: true
 
 color_scheme: spacebase
 
-callouts:
-  highlight:
-    color: yellow
-  important:
-    color: red
-  rocket:
-    title: Rocket
-    color: orange
-
 plugins:
   - jekyll-remote-theme
   - jekyll-seo-tag
