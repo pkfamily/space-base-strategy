@@ -56,9 +56,16 @@ def plot_win_rates(results) -> None:
     labels = [_label(r) for r in results]
     rates = [r.p0_win_rate for r in results]
     y = np.arange(len(labels))
-    colors = [ORANGE if "income" in r.p0 and "rush" in r.p1 else TEAL if "rush" in r.p0 else SKY for r in results]
+    def _bar_color(r) -> str:
+        if r.p0 in ("income", "snowball") and r.p1 == "rush":
+            return ORANGE
+        if r.p0 == "rush" and r.p1 in ("income", "snowball"):
+            return TEAL
+        return SKY
 
-    fig, ax = plt.subplots(figsize=(10, 5.5), layout="constrained")
+    colors = [_bar_color(r) for r in results]
+
+    fig, ax = plt.subplots(figsize=(10, 6.5), layout="constrained")
     bars = ax.barh(y, rates, color=colors, height=0.65, edgecolor=GRID)
     ax.set_yticks(y, labels)
     ax.set_xlim(0, 105)

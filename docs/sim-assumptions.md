@@ -26,11 +26,16 @@ The [strategy guides](guide/) describe how **humans** should play Space Base at 
 | `rush` | 1–6 cargo/rockets, colony race, pass on leak, deny, arrow-smart rolls |
 | `income` | Income to 5–7, then colonies; pass; deny; arrow-smart rolls |
 | `chain` | Like income but **buys arrows on 7–11** and values chain targets |
+| `snowball` | **Tempo** buys (mid-sector income + low rockets/cargo), arrows while building, then **rush** close |
 | `random` | Uniform legal moves (sanity check only) |
 
 **Arrow-aware rolls:** singles vs sum and left vs right use `arrow_ai` (greedy VP/gold/income scoring).
 
 **Deny:** When opponent is near **40**, bots may take the best affordable **colony**; may hate-draft **arrows on 7–11** that feed a strong opponent sector.
+
+## `snowball` vs `rush`
+
+The **`snowball`** bot implements the guide’s blended plan (efficient **5–8 income** plus **1–6 tempo**, deny, arrow-aware rolls). In batch sims it lands **near 50%** against `rush` — unlike naive `income`, which still collapses. Pure rush is no longer the only viable bot; it is the baseline to beat.
 
 ## Early `chain` vs `rush` signal
 

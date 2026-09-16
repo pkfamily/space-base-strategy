@@ -20,6 +20,7 @@ Python package in `src/spacebase2p/`: head-to-head **2p**, base game effects onl
 | `income` | Income to **5–7**, colonies, pass/deny, smart arrows |
 | `rush` | **1–6** engines, colony race, pass/deny, smart arrows |
 | `chain` | Income + **arrows 7–11**, deny, smart arrows (tests guide “blue chain”) |
+| `snowball` | **Tempo** scoring (5–8 income + rush lines), then pure rush close; competes with `rush` |
 | `random` | Uniform legal buy + random allocation |
 
 ## CLI

@@ -15,7 +15,7 @@ nav_order: 1
 
 <div class="sb-sim-highlight">
   <span class="sb-pill"><em>spacebase2p</em> — CLI batch games</span>
-  <span class="sb-pill">Bots: income · rush · chain · random</span>
+  <span class="sb-pill">Bots: income · rush · snowball · chain · random</span>
   <span class="sb-pill"><a href="{{ '/simulation.html' | relative_url }}">Plots</a> · <a href="{{ '/sim-analysis.html' | relative_url }}">Sim vs guide</a></span>
 </div>
 

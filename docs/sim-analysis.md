@@ -8,7 +8,7 @@ nav_order: 3
 This page interprets the latest [simulation batch](simulation.md) and maps numbers to claims in the [two-player normal guide](guide/2p-normal.md). For model limits (stub deck, bots, excluded cards), see [Simulation assumptions](sim-assumptions.md).
 
 <div class="sb-callout">
-  <strong>Bottom line:</strong> The model agrees with the guide on <strong>pace (~20 shared rounds)</strong>, <strong>colony closing</strong>, and <strong>gold leak</strong>. It shows <strong>rush-style red tempo</strong> crushing income and chain bots unless they pass and spend tightly; arrow-focused buys are only a small edge in the stub deck.
+  <strong>Bottom line:</strong> The model agrees with the guide on <strong>pace (~20 shared rounds)</strong>, <strong>colony closing</strong>, and <strong>gold leak</strong>. Naive <code>income</code> still loses to <code>rush</code>, but the <code>snowball</code> bot (tempo income + rush close) is built to match rush — see matchups below.
 </div>
 
 ## Method (this batch)
@@ -17,7 +17,7 @@ This page interprets the latest [simulation batch](simulation.md) and maps numbe
 | ------- | ----- |
 | Games per matchup | **400** ([`summary.json`]({{ '/assets/plots/summary.json' | relative_url }})) |
 | Global seed | **42** (each matchup uses its own derived seed) |
-| Bots | `income`, `rush`, `chain`, `random` |
+| Bots | `income`, `rush`, `snowball`, `chain`, `random` |
 | Win condition | 40 VP, opponent last turn |
 
 Charts on [Simulation results](simulation.md) are regenerated on each GitHub Pages deploy from [`scripts/generate_simulation_plots.py`](https://github.com/pkfamily/space-base-strategy/blob/main/scripts/generate_simulation_plots.py).
@@ -78,6 +78,8 @@ P0 win % from the latest `summary.json`:
 | `chain` | `rush` | **21.3** | Slightly worse than `income` as P0 |
 | `rush` | `chain` | **68.3** | Chain leaks more than income as P1 (**~59** gold) |
 | `chain` | `income` | **47.8** | Near even; chain a touch faster |
+
+**`snowball` vs `rush`:** near **even** in the latest batch — the guide’s blended plan is viable when encoded as tempo scoring, not “buy every income card.”
 
 **`chain` vs `income`:** small sample differences only — expand `ships.json` before treating arrow bots as validated.
 

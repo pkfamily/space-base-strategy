@@ -49,6 +49,52 @@ def best_ship_for_income(ships: list[ShipCard]) -> ShipCard | None:
     return max(income_cards, key=lambda c: (c.station.income, c.station.gold, -c.cost))
 
 
+def best_ship_for_income_mid(ships: list[ShipCard]) -> ShipCard | None:
+    """Guide opening: income on sectors 5–8."""
+    income_cards = [c for c in ships if c.station.income > 0 and 5 <= c.sector <= 8]
+    if not income_cards:
+        return None
+    return max(
+        income_cards,
+        key=lambda c: (c.station.income, c.station.gold, -c.cost, -abs(c.sector - 7)),
+    )
+
+
+def should_pass_to_save(gold: int, ships: list[ShipCard], *, mid_income_only: bool) -> bool:
+    """Pass when holding 6+ gold and no efficient buy (guide: wait for level 2)."""
+    if gold < 6:
+        return False
+    pool = ships
+    if mid_income_only:
+        pool = [c for c in ships if c.station.income > 0 and 5 <= c.sector <= 8]
+    else:
+        pool = [c for c in ships if worth_buying(gold, c.cost)]
+    return not any(worth_buying(gold, c.cost) for c in pool)
+
+
+def _ship_tempo_score(card: ShipCard) -> float:
+    """Rush lines plus strong 5–8 income (guide default 2p plan)."""
+    score = 0.0
+    if 1 <= card.sector <= 6:
+        score += card.deployed.rockets * 10
+        score += card.station.gold * 2.5
+        score += card.station.vp * 4
+    if 5 <= card.sector <= 8:
+        score += card.station.income * 14
+        score += card.station.gold * 1.5
+    if 7 <= card.sector <= 11 and card.station.has_arrow:
+        score += 6
+    score -= card.cost * 0.35
+    return score
+
+
+def best_ship_tempo(ships: list[ShipCard], gold: int) -> ShipCard | None:
+    affordable = [c for c in ships if worth_buying(gold, c.cost)]
+    if not affordable:
+        return None
+    return max(affordable, key=_ship_tempo_score)
+
+
 def best_ship_rush_engine(ships: list[ShipCard]) -> ShipCard | None:
     low = [c for c in ships if 1 <= c.sector <= 6]
     rockets = [c for c in low if c.deployed.rockets > 0]
@@ -162,6 +208,8 @@ def pick_ship_buy(
 
     if prefer == "income":
         card = best_ship_for_income(ships)
+    elif prefer == "tempo":
+        card = best_ship_tempo(ships, gold)
     else:
         card = best_ship_rush_engine(ships)
 

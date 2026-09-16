@@ -70,6 +70,19 @@ def _resolve_buy(
     return BuyAction(BuyKind.PASS)
 
 
+def _resolve_snowball_buy(game: Game, player_idx: int, target_income: int) -> BuyAction:
+    """Tempo plan: rush race plus efficient 5–8 income in one scoring pass."""
+    player = game.players[player_idx]
+    prefer = "tempo" if player.income < target_income else "rush"
+    return _resolve_buy(
+        game,
+        player_idx,
+        prefer=prefer,
+        use_deny=True,
+        use_chains=prefer == "tempo",
+    )
+
+
 class RandomBot:
     def __init__(self, rng: random.Random) -> None:
         self.rng = rng
@@ -170,6 +183,36 @@ class RushBot:
         )
 
 
+class SnowballBot:
+    """Disciplined 2p income plan (5–8), then colony rush like the guide."""
+
+    def __init__(self, rng: random.Random, target_income: int | None = None) -> None:
+        self.rng = rng
+        self.target_income = target_income or 6
+
+    def choose_allocation(
+        self,
+        game: Game,
+        player_idx: int,
+        roll: Roll,
+        active_idx: int,
+    ) -> AllocationMode:
+        return best_allocation(game, player_idx, roll, active_idx)
+
+    def choose_arrows(
+        self,
+        game: Game,
+        player_idx: int,
+        options: list[str],
+        from_sector: int = 0,
+    ) -> str:
+        is_active = player_idx == game.active
+        return choose_arrow_direction(game.players[player_idx], from_sector, is_active, options)
+
+    def choose_buy(self, game: Game, player_idx: int) -> BuyAction:
+        return _resolve_snowball_buy(game, player_idx, self.target_income)
+
+
 class ChainBot:
     """Income + blue arrows (7–11), smart allocation, deny."""
 
@@ -217,6 +260,8 @@ def make_bot_pair(names: Sequence[str], rng: random.Random) -> list:
             bots.append(RushBot(rng))
         elif key == "chain":
             bots.append(ChainBot(rng))
+        elif key in ("snowball", "snow"):
+            bots.append(SnowballBot(rng))
         elif key in ("random", "rand"):
             bots.append(RandomBot(rng))
         else:

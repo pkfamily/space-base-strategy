@@ -43,7 +43,7 @@ def main(argv: list[str] | None = None) -> None:
 
     sim = sub.add_parser("simulate", help="run N games")
     sim.add_argument("-n", "--games", type=int, default=100)
-    sim.add_argument("--p0", default="income", help="income|rush|chain|random")
+    sim.add_argument("--p0", default="income", help="income|rush|chain|snowball|random")
     sim.add_argument("--p1", default="rush")
     sim.add_argument("--seed", type=int, default=None)
     sim.set_defaults(func=cmd_simulate)
