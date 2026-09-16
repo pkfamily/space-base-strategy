@@ -11,7 +11,7 @@ aux_links:
 search_enabled: true
 heading_anchors: true
 
-color_scheme: spacebase
+color_scheme: dark
 
 plugins:
   - jekyll-remote-theme
