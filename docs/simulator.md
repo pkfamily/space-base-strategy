@@ -1,6 +1,6 @@
 ---
 title: Simulator
-nav_order: 3
+nav_order: 4
 ---
 
 # `spacebase2p` simulator

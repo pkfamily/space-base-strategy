@@ -34,7 +34,7 @@ The [strategy guides](guide/) describe how **humans** should play Space Base at 
 
 ## Early `chain` vs `rush` signal
 
-With deny + arrow-aware rolls, **`chain` still loses most games to `rush`** (~80% rush wins in large samples) but wins far more often than **`income` vs `rush`**. That supports the guide’s split: **low-sector red tempo** is strong in 2p, while **blue arrow plans** need tighter play (and more card pool) to overtake a rush race—not “buy income forever.”
+With deny + arrow-aware rolls, **`chain` still loses most games to `rush`** (~**76%** rush wins when rush is P0 in the latest batch) — same ballpark as **`income` vs `rush`** because the stub deck rarely changes `chain` buys. That supports the guide’s split: **low-sector red tempo** is strong in 2p, while **blue arrow plans** need a richer pool and tighter play to overtake a rush race—not “buy income forever.” See [Sim vs guide](sim-analysis.md).
 
 ## What corroborates the guide
 

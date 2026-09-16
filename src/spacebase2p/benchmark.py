@@ -155,7 +155,12 @@ def run_all_matchups(
     seed: int = 42,
     max_turns: int = 800,
 ) -> list[MatchupResult]:
-    return [run_matchup(a, b, games=games, seed=seed, max_turns=max_turns) for a, b in DEFAULT_MATCHUPS]
+    results: list[MatchupResult] = []
+    for i, (a, b) in enumerate(DEFAULT_MATCHUPS):
+        # Separate RNG stream per matchup so parallel rows are not replaying the same game seeds.
+        matchup_seed = seed + i * 100_003
+        results.append(run_matchup(a, b, games=games, seed=matchup_seed, max_turns=max_turns))
+    return results
 
 
 def rush_mirror_turns(games: int = 120, seed: int = 99) -> list[int]:
