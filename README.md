@@ -4,8 +4,13 @@ Strategy guides and a **2-player simulator** for Space Base (base game).
 
 **Read the guides on GitHub Pages:** [pkfamily.github.io/space-base-strategy](https://pkfamily.github.io/space-base-strategy/)
 
-Enable Pages once: **Settings → Pages → Build and deployment → Source: GitHub Actions** (workflow in `.github/workflows/pages.yml`).  
-Alternatively: deploy from branch `main` → `/docs` (same Jekyll site).
+### GitHub Pages: use `/docs`, not repo root
+
+The Jekyll site lives in **`docs/`** (`_config.yml`, guides, simulation page). The Python simulator stays at the repo root (`src/spacebase2p`, `pyproject.toml`). Do **not** set Pages to the root `/` folder.
+
+**Recommended:** **Settings → Pages → Source: GitHub Actions**. The workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) runs Jekyll with `source: ./docs` and deploys the built site.
+
+**Alternative:** **Source: Deploy from branch** → branch `main` → folder **`/docs`** (built-in Jekyll on GitHub; no workflow). Pick Actions *or* branch deploy, not both.
 
 ## Simulator
 

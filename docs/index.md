@@ -27,6 +27,6 @@ This site collects:
 
 ## GitHub Pages
 
-After cloning, enable **Settings → Pages → Build from branch `main` → `/docs`**. The site URL will be:
+Use the **`docs/`** folder (not the repo root). Enable **Settings → Pages → Source: GitHub Actions** (see workflow in `.github/workflows/pages.yml`), or **Deploy from branch `main` → `/docs`**.
 
-`https://pkfamily.github.io/space-base-strategy/`
+Site URL: `https://pkfamily.github.io/space-base-strategy/`
