@@ -4,8 +4,8 @@
 
 <p align="center">
   <a href="https://pkfamily.github.io/space-base-strategy/"><img src="https://img.shields.io/badge/Strategy_guides-GitHub_Pages-2d6a9f?style=for-the-badge" alt="Strategy guides on GitHub Pages" /></a>
-  <a href="docs/simulator.md"><img src="https://img.shields.io/badge/spacebase2p-Python_simulator-e85d04?style=for-the-badge&logo=python&logoColor=white" alt="spacebase2p Python simulator" /></a>
-  <a href="tests/"><img src="https://img.shields.io/badge/tests-pytest-0a9396?style=for-the-badge" alt="pytest" /></a>
+  <a href="https://pkfamily.github.io/space-base-strategy/simulation.html"><img src="https://img.shields.io/badge/Sim_results-charts_&_JSON-e85d04?style=for-the-badge" alt="Simulation results" /></a>
+  <a href="docs/simulator.md"><img src="https://img.shields.io/badge/spacebase2p-Python_simulator-0a9396?style=for-the-badge&logo=python&logoColor=white" alt="spacebase2p Python simulator" /></a>
 </p>
 
 <p align="center">
@@ -16,35 +16,39 @@
 
 ## `spacebase2p` — 2-player simulation
 
-We built a **Python package** (`src/spacebase2p`) that plays out head-to-head Space Base games: dice allocation, doubles, income floor, colonies, rockets, arrows, and “spend all gold” buys. Ship it with three bots — **`income`**, **`rush`**, **`random`** — and batch thousands of games for win rates, overspend, and when colonies hit.
+Python package (`src/spacebase2p`) for head-to-head **base game** 2p: dice allocation, doubles, income floor, colonies, rockets, arrows, spend-all-gold buys. Setup matches normal start (5g, random L1, **+1 gold to whoever rolls second** in round 1).
+
+**Bots:** `income`, `rush`, `snowball`, `chain`, `random` — see [simulator](docs/simulator.md) and [assumptions](docs/sim-assumptions.md).
 
 ```bash
 git clone https://github.com/pkfamily/space-base-strategy.git
 cd space-base-strategy
 pip install -e ".[dev]"
 
-python3 -m spacebase2p.cli simulate -n 500 --p0 chain --p1 rush
-python3 -m spacebase2p.cli replay --p0 chain --p1 rush --seed 42
+python3 -m spacebase2p.cli simulate -n 500 --p0 snowball --p1 rush
+python3 -m spacebase2p.cli replay --p0 snowball --p1 rush --seed 42
+python3 scripts/generate_simulation_plots.py   # refresh docs/assets/plots/
 python3 -m pytest
 ```
 
 | | |
 | --- | --- |
-| Package reference | [docs/simulator.md](docs/simulator.md) |
-| Matchup tables & analysis | [Simulation results](https://pkfamily.github.io/space-base-strategy/simulation.html) · [markdown](docs/simulation.md) |
-| Console entry point | `spacebase2p` after `pip install -e .` |
+| Package & CLI | [docs/simulator.md](docs/simulator.md) |
+| Charts & batch table | [Simulation results](https://pkfamily.github.io/space-base-strategy/simulation.html) |
+| Sim vs strategy guide | [Sim analysis](https://pkfamily.github.io/space-base-strategy/sim-analysis.html) |
+| `summary.json` | [docs/assets/plots/summary.json](docs/assets/plots/summary.json) |
 
-Early sim takeaway: **rush-style bots crush income bots** in the current heuristics — mostly **overspend** on always-buy income, not because income is useless. Details on the [results page](docs/simulation.md).
+**Takeaway from current bots:** `rush` still beats naive `income` (overspend). **`snowball`** (tempo income + rush close) is **competitive with `rush`** in batch sims. Charts and tables regenerate on each [Pages deploy](.github/workflows/pages.yml).
 
 ---
 
 ## Strategy guides
 
-Full playbooks (engine math, 2p/3p normal, Light Speed, tactics) are on **GitHub Pages**:
+Full playbooks on **GitHub Pages**:
 
 ### [pkfamily.github.io/space-base-strategy](https://pkfamily.github.io/space-base-strategy/)
 
-- [Engine rules](https://pkfamily.github.io/space-base-strategy/engine.html) · [2p](https://pkfamily.github.io/space-base-strategy/guide/2p-normal.html) · [3p](https://pkfamily.github.io/space-base-strategy/guide/3p-normal.html) · [Light Speed](https://pkfamily.github.io/space-base-strategy/guide/light-speed.html) · [Quick reference](https://pkfamily.github.io/space-base-strategy/guide/quick-reference.html)
+- [Engine](https://pkfamily.github.io/space-base-strategy/engine.html) · [2p](https://pkfamily.github.io/space-base-strategy/guide/2p-normal.html) · [3p](https://pkfamily.github.io/space-base-strategy/guide/3p-normal.html) · [Light Speed](https://pkfamily.github.io/space-base-strategy/guide/light-speed.html) · [Quick reference](https://pkfamily.github.io/space-base-strategy/guide/quick-reference.html)
 
 Source: [`docs/`](docs/)
 
@@ -53,15 +57,16 @@ Source: [`docs/`](docs/)
 ## Repo layout
 
 ```
-src/spacebase2p/   simulation engine, bots, CLI
-tests/             core rules covered by pytest
-docs/              site + guides + assets/
+src/spacebase2p/   engine, bots, CLI, card JSON
+tests/             pytest (rules, calibration, bots)
+docs/              Jekyll site, guides, plot assets
+scripts/           generate_simulation_plots.py
 ```
 
 <details>
 <summary><strong>Maintainers: GitHub Pages</strong></summary>
 
-Build from **`docs/`** (not repo root). **Settings → Pages → GitHub Actions** ([workflow](.github/workflows/pages.yml)), or deploy branch `main` → `/docs`.
+Use **Settings → Pages → Build and deployment → GitHub Actions** ([workflow](.github/workflows/pages.yml)). The workflow runs the plot script, then builds Jekyll from `docs/`. Bump `plots_version` in `docs/_config.yml` when you need browsers to reload chart PNGs.
 
 </details>
 
