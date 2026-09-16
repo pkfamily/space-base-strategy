@@ -1,0 +1,171 @@
+/* Space Base fan-site styling (unofficial) */
+
+@import url("https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&display=swap");
+
+body,
+.side-bar,
+.main-content-wrap {
+  font-family: "Exo 2", system-ui, sans-serif;
+}
+
+.site-title,
+.main-content h1,
+.main-content h2 {
+  letter-spacing: 0.02em;
+}
+
+.main-content h1 {
+  color: #e9c46a;
+}
+
+.main-content h2 {
+  color: #4cc9f0;
+  border-bottom: 1px solid #2a3f55;
+  padding-bottom: 0.35rem;
+}
+
+.side-bar {
+  background: linear-gradient(180deg, #0a1622 0%, #0d1b2a 55%, #132337 100%);
+  border-right: 1px solid #2a3f55;
+}
+
+.site-header {
+  border-bottom: 1px solid #2a3f55;
+}
+
+.site-button {
+  background: linear-gradient(135deg, #e85d04 0%, #f48c06 100%);
+  color: #0d1b2a !important;
+  font-weight: 600;
+}
+
+.site-nav > ul.nav-list > li > a,
+.site-nav > ul.nav-list > li > button {
+  color: #c5d4e3;
+}
+
+.site-nav > ul.nav-list > li > a:hover,
+.site-nav > ul.nav-list > li > button:hover {
+  color: #4cc9f0;
+}
+
+.main-content-wrap {
+  background: radial-gradient(ellipse at 20% 0%, #152a40 0%, #0d1b2a 45%, #0d1b2a 100%);
+}
+
+.main-content {
+  max-width: 52rem;
+}
+
+.sb-hero {
+  text-align: center;
+  margin: 0 0 1.5rem;
+}
+
+.sb-hero img {
+  width: min(100%, 720px);
+  border-radius: 10px;
+  border: 1px solid #2a3f55;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+.sb-lead {
+  font-size: 1.05rem;
+  color: #8ba3b8;
+  text-align: center;
+  margin: 0 auto 2rem;
+  max-width: 40rem;
+}
+
+.sb-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.sb-card {
+  background: #1b2838;
+  border: 1px solid #2a3f55;
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.sb-card:hover {
+  border-color: #4cc9f0;
+  transform: translateY(-2px);
+}
+
+.sb-card strong {
+  color: #e9c46a;
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.sb-card a {
+  font-weight: 600;
+}
+
+.sb-callout {
+  background: linear-gradient(90deg, #1b2838 0%, #152a40 100%);
+  border-left: 4px solid #e85d04;
+  padding: 0.85rem 1rem;
+  margin: 1.25rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.sb-plot-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.sb-plot-grid figure {
+  margin: 0;
+  background: #1b2838;
+  border: 1px solid #2a3f55;
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+.sb-plot-grid img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+}
+
+.sb-plot-grid figcaption {
+  color: #8ba3b8;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.sb-sim-highlight {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.sb-pill {
+  background: #152a40;
+  border: 1px solid #2a3f55;
+  color: #e6edf3;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+.sb-pill em {
+  color: #e85d04;
+  font-style: normal;
+  font-weight: 600;
+}
+
+footer.site-footer {
+  border-top: 1px solid #2a3f55;
+  color: #8ba3b8;
+}

@@ -4,33 +4,53 @@ layout: home
 nav_order: 1
 ---
 
-<p align="center">
-  <img src="{{ site.baseurl }}/assets/readme-banner.png" alt="Space Base strategy and simulation" width="720" />
+<div class="sb-hero">
+  <img src="{{ '/assets/readme-banner.png' | relative_url }}" alt="Space Base strategy and simulation" />
+</div>
+
+<p class="sb-lead">
+  Race to <strong>40 VP</strong> across twelve sectors — blue rewards on your turn, red on theirs.
+  Strategy guides for every player count, plus the <strong>spacebase2p</strong> Python simulator and live bot stats.
 </p>
 
-# Space Base strategy
+<div class="sb-sim-highlight">
+  <span class="sb-pill"><em>spacebase2p</em> — CLI batch games</span>
+  <span class="sb-pill">Bots: income · rush · random</span>
+  <span class="sb-pill"><a href="{{ '/simulation.html' | relative_url }}">Plots &amp; results</a></span>
+</div>
 
-Space Base is a race to **40 VP**: build a 12-sector dice engine where **blue (station)** rewards fire on your turn and **red (deployed)** rewards fire on everyone else’s rolls. Player count and Light Speed change which side wins games.
+## Explore
 
-This site collects:
+<div class="sb-cards">
+  <div class="sb-card">
+    <strong>Simulation</strong>
+    <a href="{{ '/simulation.html' | relative_url }}">Bot matchups &amp; charts</a> — win rates, overspend, colony timing from <code>spacebase2p</code>.
+  </div>
+  <div class="sb-card">
+    <strong>Engine</strong>
+    <a href="{{ '/engine.html' | relative_url }}">Dice, income floor, colonies</a> — shared rules for all modes.
+  </div>
+  <div class="sb-card">
+    <strong>Two-player</strong>
+    <a href="{{ '/guide/2p-normal.html' | relative_url }}">Normal start</a> — income, arrows, closing race.
+  </div>
+  <div class="sb-card">
+    <strong>Three-player</strong>
+    <a href="{{ '/guide/3p-normal.html' | relative_url }}">Normal start</a> — red stacks, earlier colonies.
+  </div>
+  <div class="sb-card">
+    <strong>Light Speed</strong>
+    <a href="{{ '/guide/light-speed.html' | relative_url }}">15-gold draft</a> — 2p and 3p LS playbooks.
+  </div>
+  <div class="sb-card">
+    <strong>Cheat sheet</strong>
+    <a href="{{ '/guide/quick-reference.html' | relative_url }}">Quick reference</a> — one table, four sentences.
+  </div>
+</div>
 
-- **[Engine rules]({{ site.baseurl }}/engine.html)** — allocation, hit rates, income floor, colonies
-- **[Mode guides]({{ site.baseurl }}/guide/)** — 2p/3p normal and Light Speed playbooks
-- **[Simulation results]({{ site.baseurl }}/simulation.html)** — `spacebase2p` bot matchups (800 games each)
-- **[Simulator]({{ site.baseurl }}/simulator.html)** — run your own batches locally
-
-## Quick links
-
-| If you play… | Start here |
-| ------------ | ---------- |
-| 2p normal | [Two-player guide]({{ site.baseurl }}/guide/2p-normal.html) |
-| 3p normal | [Three-player guide]({{ site.baseurl }}/guide/3p-normal.html) |
-| Any Light Speed | [Light Speed overview]({{ site.baseurl }}/guide/light-speed.html) |
-| Closing games | [Shared tactics]({{ site.baseurl }}/guide/shared-tactics.html) |
-| One-screen cheat sheet | [Quick reference]({{ site.baseurl }}/guide/quick-reference.html) |
-
-## GitHub Pages
-
-Use the **`docs/`** folder (not the repo root). Enable **Settings → Pages → Source: GitHub Actions** (see workflow in `.github/workflows/pages.yml`), or **Deploy from branch `main` → `/docs`**.
-
-Site URL: `https://pkfamily.github.io/space-base-strategy/`
+<div class="sb-callout">
+  <strong>Run the sim locally:</strong>
+  <code>pip install -e ".[dev]"</code> then
+  <code>python3 -m spacebase2p.cli -n 500 --p0 income --p1 rush</code>.
+  Regenerate site plots with <code>python3 scripts/generate_simulation_plots.py</code>.
+</div>

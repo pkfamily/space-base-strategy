@@ -11,7 +11,16 @@ aux_links:
 search_enabled: true
 heading_anchors: true
 
-color_scheme: dark
+color_scheme: spacebase
+
+callouts:
+  highlight:
+    color: yellow
+  important:
+    color: red
+  rocket:
+    title: Rocket
+    color: orange
 
 plugins:
   - jekyll-remote-theme
