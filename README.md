@@ -23,7 +23,8 @@ git clone https://github.com/pkfamily/space-base-strategy.git
 cd space-base-strategy
 pip install -e ".[dev]"
 
-python3 -m spacebase2p.cli -n 500 --p0 income --p1 rush --seed 42
+python3 -m spacebase2p.cli simulate -n 500 --p0 chain --p1 rush
+python3 -m spacebase2p.cli replay --p0 chain --p1 rush --seed 42
 python3 -m pytest
 ```
 
