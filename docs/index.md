@@ -4,6 +4,10 @@ layout: home
 nav_order: 1
 ---
 
+<p align="center">
+  <img src="{{ site.baseurl }}/assets/readme-banner.png" alt="Space Base strategy and simulation" width="720" />
+</p>
+
 # Space Base strategy
 
 Space Base is a race to **40 VP**: build a 12-sector dice engine where **blue (station)** rewards fire on your turn and **red (deployed)** rewards fire on everyone else’s rolls. Player count and Light Speed change which side wins games.
