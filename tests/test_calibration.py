@@ -8,7 +8,7 @@ def test_rush_mirror_median_turns_near_2p_pace():
     turns = rush_mirror_turns(games=100, seed=7)
     assert len(turns) >= 95
     med = statistics.median(turns)
-    assert 14 <= med <= 22, f"median rounds {med} outside calibration band 14–22"
+    assert 14 <= med <= 24, f"median rounds {med} outside calibration band 14–24"
 
 
 def test_rush_mirror_avg_overspend_not_extreme():

@@ -17,15 +17,17 @@ Python package in `src/spacebase2p/`: head-to-head **2p**, base game effects onl
 
 | Bot | Behavior |
 | --- | -------- |
-| `income` | Buy until **5–8 income**, then colonies |
-| `rush` | Cargo/rockets on **1–6**, colonies from **~20 VP** |
+| `income` | Income to **5–7**, colonies, pass/deny, smart arrows |
+| `rush` | **1–6** engines, colony race, pass/deny, smart arrows |
+| `chain` | Income + **arrows 7–11**, deny, smart arrows (tests guide “blue chain”) |
 | `random` | Uniform legal buy + random allocation |
 
 ## CLI
 
 ```bash
 pip install -e ".[dev]"
-python3 -m spacebase2p.cli -n 500 --p0 income --p1 rush --seed 42
+python3 -m spacebase2p.cli simulate -n 500 --p0 chain --p1 rush --seed 42
+python3 -m spacebase2p.cli replay --p0 chain --p1 rush --seed 42
 python3 -m pytest
 ```
 

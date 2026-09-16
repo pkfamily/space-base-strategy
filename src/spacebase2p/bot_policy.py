@@ -60,6 +60,95 @@ def best_ship_rush_engine(ships: list[ShipCard]) -> ShipCard | None:
     return None
 
 
+def opponent_gold(game: Game, player_idx: int) -> int:
+    return game.players[game.opponent_idx(player_idx)].gold
+
+
+def opponent_needs_close(game: Game, player_idx: int) -> bool:
+    opp = game.players[game.opponent_idx(player_idx)]
+    return opp.vp >= 28 or (opp.vp >= 24 and opp.gold >= 6)
+
+
+def deny_colony_action(
+    game: Game,
+    player_idx: int,
+    colonies: list[ColonyOffer],
+) -> BuyAction | None:
+    """Take a high-VP colony when the opponent is threatening to close."""
+    if not opponent_needs_close(game, player_idx):
+        return None
+    player = game.players[player_idx]
+    affordable = [c for c in colonies if worth_buying(player.gold, c.cost, keystone=True)]
+    if not affordable:
+        return None
+    return BuyAction(BuyKind.COLONY, colony=max(affordable, key=lambda c: (c.vp, -c.sector)))
+
+
+def _arrow_target_value(game: Game, player_idx: int, card: ShipCard) -> float:
+    """How juicy is the sector this arrow would feed on our board?"""
+    player = game.players[player_idx]
+    sector = card.sector
+    total = 0.0
+    if card.station.arrow_right and sector < 12:
+        total += sector_standing_value(player, sector + 1, True)
+    if card.station.arrow_left and sector > 1:
+        total += sector_standing_value(player, sector - 1, True)
+    return total
+
+
+def sector_standing_value(player, sector: int, active_player_turn: bool) -> float:
+    from spacebase2p.rewards import RewardDelta, _apply_side
+
+    st = player.sector(sector)
+    delta = RewardDelta()
+    if active_player_turn:
+        if st.colony or st.stationed is None:
+            return 0.0
+        _apply_side(st.stationed.station, delta)
+    else:
+        for c in st.deployed:
+            _apply_side(c.deployed, delta)
+    return delta.vp * 3 + delta.gold + delta.income * 2
+
+
+def deny_arrow_ship(ships: list[ShipCard], game: Game, player_idx: int) -> ShipCard | None:
+    """Hate-draft arrows on 7–11 that feed strong neighbors or block opponent chains."""
+    opp = game.players[game.opponent_idx(player_idx)]
+    candidates = [
+        c
+        for c in ships
+        if 7 <= c.sector <= 11 and c.station.has_arrow and worth_buying(game.players[player_idx].gold, c.cost, keystone=True)
+    ]
+    if not candidates:
+        return None
+
+    def opp_chain_value(card: ShipCard) -> float:
+        v = 0.0
+        s = card.sector
+        if card.station.arrow_right and s < 12:
+            v += sector_standing_value(opp, s + 1, False)
+        if card.station.arrow_left and s > 1:
+            v += sector_standing_value(opp, s - 1, False)
+        return v
+
+    return max(candidates, key=lambda c: (opp_chain_value(c), _arrow_target_value(game, player_idx, c), -c.cost))
+
+
+def best_chain_ship(ships: list[ShipCard], game: Game, player_idx: int) -> ShipCard | None:
+    player = game.players[player_idx]
+    arrows = [
+        c
+        for c in ships
+        if 7 <= c.sector <= 11 and c.station.has_arrow
+    ]
+    if not arrows:
+        return None
+    affordable = [c for c in arrows if worth_buying(player.gold, c.cost, keystone=c.station.has_arrow)]
+    if not affordable:
+        return None
+    return max(affordable, key=lambda c: (_arrow_target_value(game, player_idx, c), c.station.vp, -c.cost))
+
+
 def pick_ship_buy(
     game: Game,
     player_idx: int,

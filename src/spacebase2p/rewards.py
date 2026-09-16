@@ -60,7 +60,14 @@ def _neighbor(sector: int, direction: ArrowChoice) -> int | None:
     return None
 
 
-def _arrow_directions(effects: SideEffects, choose: Callable[[list[ArrowChoice]], ArrowChoice]) -> list[ArrowChoice]:
+ArrowChooser = Callable[..., ArrowChoice | None]
+
+
+def _arrow_directions(
+    effects: SideEffects,
+    choose: ArrowChooser,
+    from_sector: int,
+) -> list[ArrowChoice]:
     dirs: list[ArrowChoice] = []
     if effects.arrow_left:
         dirs.append("left")
@@ -70,7 +77,7 @@ def _arrow_directions(effects: SideEffects, choose: Callable[[list[ArrowChoice]]
         return []
     if len(dirs) == 1:
         return dirs
-    picked = choose(dirs)
+    picked = choose(dirs, from_sector)
     return [picked] if picked else []
 
 
@@ -80,7 +87,7 @@ def resolve_sector_rewards(
     active_player_turn: bool,
     ctx: ResolutionContext,
     times: int,
-    arrow_chooser: Callable[[list[ArrowChoice]], ArrowChoice],
+    arrow_chooser: ArrowChooser,
 ) -> RewardDelta:
     """Resolve stationed (blue) or deployed (red) rewards for sector activations."""
     delta = RewardDelta()
@@ -98,7 +105,7 @@ def _resolve_one_activation(
     sector: int,
     active_player_turn: bool,
     ctx: ResolutionContext,
-    arrow_chooser: Callable[[list[ArrowChoice]], ArrowChoice],
+    arrow_chooser: ArrowChooser,
     delta: RewardDelta,
 ) -> None:
     st = player.sector(sector)
@@ -111,7 +118,7 @@ def _resolve_one_activation(
         if stationed is not None:
             effects = stationed.station
             _apply_side(effects, delta)
-            for direction in _arrow_directions(effects, arrow_chooser):
+            for direction in _arrow_directions(effects, arrow_chooser, sector):
                 n = _neighbor(sector, direction)
                 if n is not None:
                     sub = resolve_sector_rewards(
@@ -124,7 +131,7 @@ def _resolve_one_activation(
         for card in st.deployed:
             effects = card.deployed
             _apply_side(effects, delta)
-            for direction in _arrow_directions(effects, arrow_chooser):
+            for direction in _arrow_directions(effects, arrow_chooser, sector):
                 n = _neighbor(sector, direction)
                 if n is not None:
                     sub = resolve_sector_rewards(
@@ -146,7 +153,7 @@ def evaluate_roll(
     sectors_and_times: list[tuple[int, int]],
     active_player_turn: bool,
     mode: AllocationMode,
-    arrow_chooser: Callable[[list[ArrowChoice]], ArrowChoice],
+    arrow_chooser: ArrowChooser,
 ) -> RewardDelta:
     ctx = ResolutionContext(mode=mode)
     total = RewardDelta()

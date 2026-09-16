@@ -3,48 +3,71 @@ from __future__ import annotations
 import random
 from typing import Sequence
 
+from spacebase2p.arrow_ai import best_allocation, choose_arrow_direction
 from spacebase2p.bot_policy import (
+    best_chain_ship,
     best_colony,
+    deny_arrow_ship,
+    deny_colony_action,
     pick_ship_buy,
     should_race_colonies,
     worth_buying,
 )
-from spacebase2p.dice import Roll, legal_allocation_modes, sector_hits
+from spacebase2p.dice import Roll, legal_allocation_modes
 from spacebase2p.game import BuyAction, BuyKind, Game, legal_colony_buys, legal_ship_buys
-from spacebase2p.models import AllocationMode
-from spacebase2p.rewards import evaluate_roll
+from spacebase2p.models import AllocationMode, ArrowChoice
 
 
-def _greedy_arrows(_game: Game, _pidx: int, options: list[str]) -> str:
-    return options[0]
-
-
-def _best_allocation(
+def _resolve_buy(
     game: Game,
-    pidx: int,
-    roll: Roll,
-    active_idx: int,
-) -> AllocationMode:
-    player = game.players[pidx]
-    is_active = pidx == active_idx
-    best_mode = AllocationMode.SINGLES
-    best_score = -1.0
+    player_idx: int,
+    *,
+    prefer: str,
+    use_deny: bool,
+    use_chains: bool,
+    target_income: int | None = None,
+) -> BuyAction:
+    player = game.players[player_idx]
+    colonies = legal_colony_buys(player, game.market)
+    ships = legal_ship_buys(player, game.market)
 
-    for mode in legal_allocation_modes(roll):
-        hits = sector_hits(roll, mode)
-        sectors_times = [(h.sector, h.times) for h in hits]
-        delta = evaluate_roll(
-            player,
-            sectors_times,
-            is_active,
-            mode,
-            lambda opts: opts[0] if opts else None,
-        )
-        score = delta.vp * 3 + delta.gold + delta.income * 2
-        if score > best_score:
-            best_score = score
-            best_mode = mode
-    return best_mode
+    if use_deny:
+        deny = deny_colony_action(game, player_idx, colonies)
+        if deny:
+            return deny
+        arrow_deny = deny_arrow_ship(ships, game, player_idx)
+        if arrow_deny:
+            return BuyAction(BuyKind.SHIP, ship=arrow_deny)
+
+    if should_race_colonies(game, player_idx):
+        best = best_colony(colonies)
+        if best and worth_buying(player.gold, best.cost, keystone=True):
+            return BuyAction(BuyKind.COLONY, colony=best)
+
+    if use_chains and not should_race_colonies(game, player_idx):
+        chain = best_chain_ship(ships, game, player_idx)
+        if chain and worth_buying(player.gold, chain.cost, keystone=True):
+            return BuyAction(BuyKind.SHIP, ship=chain)
+
+    if prefer == "income" and target_income is not None and player.income < target_income:
+        action = pick_ship_buy(game, player_idx, ships, prefer="income")
+        if action:
+            return action
+
+    if not should_race_colonies(game, player_idx):
+        action = pick_ship_buy(game, player_idx, ships, prefer=prefer)
+        if action:
+            return action
+
+    if colonies:
+        best = best_colony(colonies)
+        if best and worth_buying(player.gold, best.cost, keystone=True):
+            return BuyAction(BuyKind.COLONY, colony=best)
+
+    action = pick_ship_buy(game, player_idx, ships, prefer=prefer)
+    if action:
+        return action
+    return BuyAction(BuyKind.PASS)
 
 
 class RandomBot:
@@ -60,7 +83,13 @@ class RandomBot:
     ) -> AllocationMode:
         return self.rng.choice(legal_allocation_modes(roll))
 
-    def choose_arrows(self, game: Game, player_idx: int, options: list[str]) -> str:
+    def choose_arrows(
+        self,
+        game: Game,
+        player_idx: int,
+        options: list[str],
+        from_sector: int = 0,
+    ) -> str:
         return self.rng.choice(options)
 
     def choose_buy(self, game: Game, player_idx: int) -> BuyAction:
@@ -74,8 +103,6 @@ class RandomBot:
 
 
 class IncomeBot:
-    """Stack income to target, then race colonies; pass on leaky buys."""
-
     def __init__(self, rng: random.Random, target_income: int | None = None) -> None:
         self.rng = rng
         self.target_income = target_income or rng.randint(5, 7)
@@ -87,47 +114,30 @@ class IncomeBot:
         roll: Roll,
         active_idx: int,
     ) -> AllocationMode:
-        return _best_allocation(game, player_idx, roll, active_idx)
+        return best_allocation(game, player_idx, roll, active_idx)
 
-    def choose_arrows(self, game: Game, player_idx: int, options: list[str]) -> str:
-        return _greedy_arrows(game, player_idx, options)
+    def choose_arrows(
+        self,
+        game: Game,
+        player_idx: int,
+        options: list[str],
+        from_sector: int = 0,
+    ) -> str:
+        is_active = player_idx == game.active
+        return choose_arrow_direction(game.players[player_idx], from_sector, is_active, options)
 
     def choose_buy(self, game: Game, player_idx: int) -> BuyAction:
-        player = game.players[player_idx]
-        colonies = legal_colony_buys(player, game.market)
-        ships = legal_ship_buys(player, game.market)
-
-        if should_race_colonies(game, player_idx):
-            best = best_colony(colonies)
-            if best and worth_buying(player.gold, best.cost, keystone=True):
-                return BuyAction(BuyKind.COLONY, colony=best)
-
-        if player.income < self.target_income:
-            action = pick_ship_buy(game, player_idx, ships, prefer="income")
-            if action:
-                return action
-
-        if colonies:
-            best = best_colony(colonies)
-            if best and worth_buying(player.gold, best.cost, keystone=should_race_colonies(game, player_idx)):
-                return BuyAction(BuyKind.COLONY, colony=best)
-
-        action = pick_ship_buy(
+        return _resolve_buy(
             game,
             player_idx,
-            ships,
             prefer="income",
-            keystone_filter=lambda c: c.station.income > 0 and c.station.arrow_right,
+            use_deny=True,
+            use_chains=False,
+            target_income=self.target_income,
         )
-        if action:
-            return action
-
-        return BuyAction(BuyKind.PASS)
 
 
 class RushBot:
-    """1–6 engines, then colony race; pass on overspend."""
-
     def __init__(self, rng: random.Random) -> None:
         self.rng = rng
 
@@ -138,36 +148,63 @@ class RushBot:
         roll: Roll,
         active_idx: int,
     ) -> AllocationMode:
-        return _best_allocation(game, player_idx, roll, active_idx)
+        return best_allocation(game, player_idx, roll, active_idx)
 
-    def choose_arrows(self, game: Game, player_idx: int, options: list[str]) -> str:
-        return _greedy_arrows(game, player_idx, options)
+    def choose_arrows(
+        self,
+        game: Game,
+        player_idx: int,
+        options: list[str],
+        from_sector: int = 0,
+    ) -> str:
+        is_active = player_idx == game.active
+        return choose_arrow_direction(game.players[player_idx], from_sector, is_active, options)
 
     def choose_buy(self, game: Game, player_idx: int) -> BuyAction:
-        player = game.players[player_idx]
-        colonies = legal_colony_buys(player, game.market)
-        ships = legal_ship_buys(player, game.market)
+        return _resolve_buy(
+            game,
+            player_idx,
+            prefer="rush",
+            use_deny=True,
+            use_chains=False,
+        )
 
-        if should_race_colonies(game, player_idx):
-            best = best_colony(colonies)
-            if best and worth_buying(player.gold, best.cost, keystone=True):
-                return BuyAction(BuyKind.COLONY, colony=best)
 
-        if not should_race_colonies(game, player_idx):
-            action = pick_ship_buy(game, player_idx, ships, prefer="rush")
-            if action:
-                return action
+class ChainBot:
+    """Income + blue arrows (7–11), smart allocation, deny."""
 
-        if colonies:
-            best = best_colony(colonies)
-            if best and worth_buying(player.gold, best.cost, keystone=True):
-                return BuyAction(BuyKind.COLONY, colony=best)
+    def __init__(self, rng: random.Random, target_income: int | None = None) -> None:
+        self.rng = rng
+        self.target_income = target_income or rng.randint(4, 6)
 
-        action = pick_ship_buy(game, player_idx, ships, prefer="rush")
-        if action:
-            return action
+    def choose_allocation(
+        self,
+        game: Game,
+        player_idx: int,
+        roll: Roll,
+        active_idx: int,
+    ) -> AllocationMode:
+        return best_allocation(game, player_idx, roll, active_idx)
 
-        return BuyAction(BuyKind.PASS)
+    def choose_arrows(
+        self,
+        game: Game,
+        player_idx: int,
+        options: list[str],
+        from_sector: int = 0,
+    ) -> str:
+        is_active = player_idx == game.active
+        return choose_arrow_direction(game.players[player_idx], from_sector, is_active, options)
+
+    def choose_buy(self, game: Game, player_idx: int) -> BuyAction:
+        return _resolve_buy(
+            game,
+            player_idx,
+            prefer="income",
+            use_deny=True,
+            use_chains=True,
+            target_income=self.target_income,
+        )
 
 
 def make_bot_pair(names: Sequence[str], rng: random.Random) -> list:
@@ -178,6 +215,8 @@ def make_bot_pair(names: Sequence[str], rng: random.Random) -> list:
             bots.append(IncomeBot(rng))
         elif key == "rush":
             bots.append(RushBot(rng))
+        elif key == "chain":
+            bots.append(ChainBot(rng))
         elif key in ("random", "rand"):
             bots.append(RandomBot(rng))
         else:

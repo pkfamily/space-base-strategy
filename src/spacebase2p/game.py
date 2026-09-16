@@ -40,6 +40,7 @@ class Bot(Protocol):
         game: Game,
         player_idx: int,
         options: list[str],
+        from_sector: int = 0,
     ) -> str: ...
 
     def choose_buy(self, game: Game, player_idx: int) -> BuyAction: ...
@@ -111,10 +112,10 @@ class Game:
             is_active_turn = pidx == active_idx
             hits = sector_hits(roll, mode)
 
-            def arrow_chooser(options: list) -> str | None:
+            def arrow_chooser(options: list, from_sector: int = 0) -> str | None:
                 if not options:
                     return None
-                return bot.choose_arrows(self, pidx, options)
+                return bot.choose_arrows(self, pidx, options, from_sector)
 
             sectors_times = [(h.sector, h.times) for h in hits]
             player = self.players[pidx]

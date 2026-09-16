@@ -15,6 +15,9 @@ DEFAULT_MATCHUPS: list[tuple[str, str]] = [
     ("income", "random"),
     ("rush", "random"),
     ("random", "random"),
+    ("chain", "rush"),
+    ("chain", "income"),
+    ("rush", "chain"),
 ]
 
 

@@ -15,7 +15,7 @@ nav_order: 1
 
 <div class="sb-sim-highlight">
   <span class="sb-pill"><em>spacebase2p</em> — CLI batch games</span>
-  <span class="sb-pill">Bots: income · rush · random</span>
+  <span class="sb-pill">Bots: income · rush · chain · random</span>
   <span class="sb-pill"><a href="{{ '/simulation.html' | relative_url }}">Plots &amp; results</a></span>
 </div>
 
@@ -25,6 +25,10 @@ nav_order: 1
   <div class="sb-card">
     <strong>Simulation</strong>
     <a href="{{ '/simulation.html' | relative_url }}">Bot matchups &amp; charts</a> — win rates, overspend, colony timing from <code>spacebase2p</code>.
+  </div>
+  <div class="sb-card">
+    <strong>Sim assumptions</strong>
+    <a href="{{ '/sim-assumptions.html' | relative_url }}">Model vs guide</a> — what the engine proves and what it skips.
   </div>
   <div class="sb-card">
     <strong>Engine</strong>
