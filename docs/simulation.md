@@ -29,7 +29,19 @@ Batch runs use the [`spacebase2p`](simulator.md) package: base game only, simpli
 
 Values are written to [`summary.json`]({{ '/assets/plots/summary.json' | relative_url }}) when you run the plot script. Default: **400 games** per matchup, seed **42**, up to **800** turns per game.
 
-Download or view **summary.json** on the deployed site for exact win rates and averages after each build.
+See [summary.json]({{ '/assets/plots/summary.json' | relative_url }}) for machine-readable output after each deploy.
+
+| P0 | P1 | P0 win % | Draws | Turns | OS P0 | OS P1 |
+| -- | -- | -------- | ----- | ----- | ----- | ----- |
+| income | rush | 6.5 | 0 | 24.5 | 47.3 | 8.0 |
+| rush | income | 86.3 | 1 | 25.8 | 7.1 | 55.3 |
+| income | income | 46.3 | 1 | 28.2 | 28.6 | 43.9 |
+| rush | rush | 44.3 | 1 | 23.3 | 12.5 | 13.2 |
+| income | random | 92.5 | 0 | 37.0 | 71.1 | 4.3 |
+| rush | random | 100.0 | 0 | 26.5 | 10.0 | 3.6 |
+| random | random | 51.5 | 0 | 68.0 | 14.0 | 16.4 |
+
+<small>Table from 400-game batch, seed 42 (committed plots). CI regenerates on push.</small>
 
 ## Seat (rush mirror)
 
