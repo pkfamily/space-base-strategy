@@ -8,7 +8,7 @@ nav_order: 3
 This page interprets the latest [simulation batch](simulation.md) and maps numbers to claims in the [two-player normal guide](guide/2p-normal.md). For model limits (stub deck, bots, excluded cards), see [Simulation assumptions](sim-assumptions.md).
 
 <div class="sb-callout">
-  <strong>Bottom line:</strong> The model agrees with the guide on <strong>pace (~20 shared rounds)</strong>, <strong>colony closing</strong>, and <strong>gold leak</strong>. It shows <strong>rush-style red tempo</strong> crushing a naive always-buy income bot, while a <strong>chain</strong> bot only matches income today because the stub deck rarely changes buy order.
+  <strong>Bottom line:</strong> The model agrees with the guide on <strong>pace (~20 shared rounds)</strong>, <strong>colony closing</strong>, and <strong>gold leak</strong>. It shows <strong>rush-style red tempo</strong> crushing income and chain bots unless they pass and spend tightly; arrow-focused buys are only a small edge in the stub deck.
 </div>
 
 ## Method (this batch)
