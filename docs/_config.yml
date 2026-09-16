@@ -1,0 +1,19 @@
+title: Space Base Strategy
+description: Mode guides, engine math, and 2-player simulation results
+remote_theme: just-the-docs/just-the-docs
+
+url: https://pkfamily.github.io
+baseurl: /space-base-strategy
+
+aux_links:
+  Repository: https://github.com/pkfamily/space-base-strategy
+
+search_enabled: true
+heading_anchors: true
+
+color_scheme: dark
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+  - jekyll-include-cache
