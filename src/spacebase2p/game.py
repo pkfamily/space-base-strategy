@@ -76,12 +76,15 @@ class Game:
         _station_card(p1, c1)
         p0.gold -= c0.cost
         p1.gold -= c1.cost
-        p1.gold += 1  # second player bonus
 
         if c0.sector >= c1.sector:
             active = 0
         else:
             active = 1
+
+        # Second player in turn order (does not roll first) gets +1 gold (base 2p rules).
+        players = [p0, p1]
+        players[1 - active].gold += 1
 
         game = cls(
             rng=rng,

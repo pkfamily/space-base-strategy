@@ -9,7 +9,7 @@ Python package in `src/spacebase2p/`: head-to-head **2p**, base game effects onl
 
 ## Setup modeled
 
-- 5 gold, random level 1 (pay cost), **Player 2 +1 gold** (CLI `--p1`; see [seat labels](simulation.md#player-seats-not-turn-order))
+- 5 gold, random level 1 (pay cost), **+1 gold to second player** (who does not roll first; see [seats](simulation.md#player-seats-not-turn-order))
 - Higher opening sector starts
 - Win at **40 VP**, opponent’s **last turn**, higher VP wins (tie = draw)
 

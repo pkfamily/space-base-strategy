@@ -16,11 +16,11 @@ Stats use **Player 1** and **Player 2** (table-game numbering), not “who rolle
 | Label | CLI flag | In the engine |
 | ----- | -------- | ------------- |
 | **Player 1** | `--p0` | Seat index 0 |
-| **Player 2** | `--p1` | Seat index 1, always gets **+1 gold** after the opening buy |
+| **Player 2** | `--p1` | Seat index 1 |
 
-**Who rolls first** on round 1 is separate: whoever drew the **higher-sector** level-1 opening card (tie → Player 1). Player 2 can roll first and still be the seat that got +1 gold.
+**Who rolls first:** whoever drew the **higher-sector** level-1 opening card (tie → Player 1). **+1 gold** goes to whoever **does not** roll first (second player in turn order), matching the rulebook — not a fixed seat.
 
-**Mirror bots** (same bot vs itself) are **not** 50/50 on win rate: Player 2’s setup bonus wins about **55–57%** in long runs (`rush` and `snowball` mirrors). A batch can show something like **38%** for Player 1 in `snowball` vs `snowball` — that is Player 1’s win share in 400 games, not a broken bot. Draws count in the denominator and pull both win rates down slightly.
+**Mirror bots** should sit near **50%** Player 1 win rate when the model is fair; small swings remain from opening luck and draws (draws count in the denominator).
 
 Charts label the **left bar / first column** as Player 1 and the **right** as Player 2 for each matchup row.
 
@@ -31,7 +31,7 @@ Charts label the **left bar / first column** as Player 1 and the **right** as Pl
 <div class="sb-plot-grid">
   <figure>
     <img src="{{ '/assets/plots/win_rates.png' | relative_url }}" alt="Bar chart of Player 1 win rate by bot matchup" />
-    <figcaption>Player 1 win rate by matchup (dashed = 50%; mirrors favor Player 2 — see seats above).</figcaption>
+    <figcaption>Player 1 win rate by matchup (dashed = 50%; see seats above).</figcaption>
   </figure>
   <figure>
     <img src="{{ '/assets/plots/overspend.png' | relative_url }}" alt="Grouped bar chart of average overspend per player" />
@@ -59,19 +59,19 @@ See [summary.json]({{ '/assets/plots/summary.json' | relative_url }}) for machin
 
 | Bot (P1) | Bot (P2) | P1 win % | Draws | Turns | OS P1 | OS P2 |
 | -------- | -------- | -------- | ----- | ----- | ----- | ----- |
-| income | rush | 23.8 | 2 | 24.1 | 50.1 | 6.3 |
-| rush | income | 74.0 | 0 | 24.2 | 5.9 | 54.2 |
-| income | income | 45.3 | 1 | 27.1 | 36.7 | 49.4 |
-| rush | rush | 45.0 | 1 | 24.0 | 9.9 | 8.8 |
-| income | random | 86.5 | 0 | 36.7 | 65.0 | 5.2 |
-| rush | random | 92.8 | 0 | 31.3 | 7.3 | 4.4 |
-| random | random | 48.4 | 0 | 65.9 | 12.0 | 12.6 |
-| chain | rush | 21.3 | 0 | 24.8 | 47.8 | 5.8 |
-| chain | income | 47.8 | 0 | 26.9 | 38.0 | 50.9 |
-| rush | chain | 68.3 | 2 | 25.7 | 5.9 | 58.7 |
-| snowball | rush | 42.3 | 1 | 22.5 | 23.4 | 7.7 |
-| rush | snowball | 34.5 | 4 | 22.2 | 7.1 | 22.6 |
-| snowball | snowball | 38.3 | 4 | 22.4 | 16.4 | 18.7 |
+| income | rush | 28.2 | 1 | 24.4 | 51.9 | 6.2 |
+| rush | income | 77.0 | 2 | 24.3 | 6.3 | 49.7 |
+| income | income | 49.0 | 2 | 26.8 | 41.1 | 44.2 |
+| rush | rush | 50.8 | 3 | 24.0 | 8.9 | 7.9 |
+| income | random | 86.0 | 1 | 36.5 | 69.5 | 4.9 |
+| rush | random | 92.8 | 0 | 31.6 | 7.5 | 4.2 |
+| random | random | 51.6 | 1 | 67.2 | 11.5 | 11.9 |
+| chain | rush | 27.5 | 2 | 24.9 | 49.4 | 5.6 |
+| chain | income | 51.5 | 1 | 27.0 | 42.8 | 43.7 |
+| rush | chain | 71.5 | 2 | 25.1 | 6.0 | 50.9 |
+| snowball | rush | 53.0 | 3 | 23.1 | 22.1 | 7.6 |
+| rush | snowball | 40.0 | 4 | 22.6 | 7.0 | 23.0 |
+| snowball | snowball | 46.2 | 4 | 22.6 | 15.7 | 17.3 |
 
 <small>Table from 400-game batch, seed 42 (committed plots). CI regenerates on push.</small>
 

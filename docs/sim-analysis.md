@@ -62,7 +62,7 @@ Average **passes per game** in `income` vs `rush` are **~10** (income) vs **~12*
 
 In `rush` vs `rush`, typical Player 1 scoring splits roughly **12 VP colonies / 18 VP dice** (batch averages). That supports the guide’s closing chapter: you are not only colony-rushing; **dice rewards and rockets** still supply a large share of the 40.
 
-Win rates use **Player 1 / Player 2** seats ([setup](simulation.md#player-seats-not-turn-order)): Player 2 always gets **+1 gold**; mirror matchups are not 50/50.
+Win rates use **Player 1 / Player 2** seats ([setup](simulation.md#player-seats-not-turn-order)): **+1 gold** goes to whoever rolls second in round 1, not a fixed seat.
 
 First colony turn in the income vs rush matchup clusters around **turn 17–18** for both seats — colonies start midgame, not turn 1.
 

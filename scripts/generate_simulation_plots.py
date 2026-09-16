@@ -177,8 +177,9 @@ def write_summary_json(results) -> None:
         "seed": SEED,
         "seats": {
             "player_1": {"cli": "--p0", "index": 0},
-            "player_2": {"cli": "--p1", "index": 1, "setup_bonus_gold": 1},
-            "note": "Win rates are for player_1 (index 0). First roller is higher opening sector, not player_2.",
+            "player_2": {"cli": "--p1", "index": 1},
+            "second_player_bonus_gold": 1,
+            "note": "Win rates are for player_1 (index 0). +1 gold goes to whoever does not roll first (higher opening sector rolls first; tie player_1).",
         },
         "matchups": [
             {

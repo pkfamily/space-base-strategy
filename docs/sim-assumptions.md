@@ -11,7 +11,7 @@ The [strategy guides](guide/) describe how **humans** should play Space Base at 
 
 | Topic | Assumption |
 | ----- | ---------- |
-| Mode | **2-player**, base game, normal start (5 gold, random L1, P2 +1) |
+| Mode | **2-player**, base game, normal start (5 gold, random L1, +1g to second in turn order) |
 | Win | **40 VP**, opponent’s last turn |
 | Effects | Gold, income, VP, rockets (VP on red), left/right arrows, colonies |
 | Excluded | Charge cubes, You Win, Gordon, swap, dice-fix, green sum-shifters |

@@ -12,7 +12,7 @@ def cmd_simulate(args: argparse.Namespace) -> None:
     g = summary.games
     print(f"Games: {g}")
     print(f"Player 1 (--p0, {args.p0}) wins: {summary.p0_wins} ({100 * summary.p0_wins / g:.1f}%)")
-    print(f"Player 2 (--p1, {args.p1}, +1g setup) wins: {summary.p1_wins} ({100 * summary.p1_wins / g:.1f}%)")
+    print(f"Player 2 (--p1, {args.p1}) wins: {summary.p1_wins} ({100 * summary.p1_wins / g:.1f}%)")
     print(f"Draws: {summary.draws} ({100 * summary.draws / g:.1f}%)")
     print(f"Avg overspend Player 1: {summary.avg_overspend_p0:.2f}")
     print(f"Avg overspend Player 2: {summary.avg_overspend_p1:.2f}")
@@ -50,7 +50,7 @@ def main(argv: list[str] | None = None) -> None:
     sim = sub.add_parser("simulate", help="run N games")
     sim.add_argument("-n", "--games", type=int, default=100)
     sim.add_argument("--p0", default="income", help="Player 1 bot (income|rush|chain|snowball|random)")
-    sim.add_argument("--p1", default="rush", help="Player 2 bot (+1 gold at setup)")
+    sim.add_argument("--p1", default="rush", help="Player 2 bot (seat; +1g if this seat rolls second)")
     sim.add_argument("--seed", type=int, default=None)
     sim.set_defaults(func=cmd_simulate)
 
