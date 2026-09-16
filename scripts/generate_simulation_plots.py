@@ -69,7 +69,7 @@ def plot_win_rates(results) -> None:
     bars = ax.barh(y, rates, color=colors, height=0.65, edgecolor=GRID)
     ax.set_yticks(y, labels)
     ax.set_xlim(0, 105)
-    ax.set_xlabel("P0 win rate (%)")
+    ax.set_xlabel("Player 1 win rate (%)")
     ax.set_title("Head-to-head win rates", color=GOLD, fontsize=14, fontweight="bold")
     ax.axvline(50, color=MUTED, linestyle="--", linewidth=0.8, alpha=0.6)
     ax.grid(axis="x")
@@ -87,8 +87,8 @@ def plot_overspend(results) -> None:
     p1 = [r.avg_overspend_p1 for r in results]
 
     fig, ax = plt.subplots(figsize=(11, 5.5), layout="constrained")
-    ax.bar(x - w / 2, p0, w, label="P0 overspend", color=ORANGE, edgecolor=GRID)
-    ax.bar(x + w / 2, p1, w, label="P1 overspend", color=TEAL, edgecolor=GRID)
+    ax.bar(x - w / 2, p0, w, label="Player 1 overspend", color=ORANGE, edgecolor=GRID)
+    ax.bar(x + w / 2, p1, w, label="Player 2 overspend", color=TEAL, edgecolor=GRID)
     ax.set_xticks(x, labels, rotation=28, ha="right")
     ax.set_ylabel("Avg gold leaked per game")
     ax.set_title("Overspend (spend-all-gold buys)", color=GOLD, fontsize=14, fontweight="bold")
@@ -119,7 +119,7 @@ def plot_turn_histogram(results) -> None:
 
 def plot_vp_sources(results) -> None:
     rush = next(r for r in results if r.p0 == "rush" and r.p1 == "rush")
-    labels = ["Colonies P0", "Dice P0", "Colonies P1", "Dice P1"]
+    labels = ["Colonies P1", "Dice P1", "Colonies P2", "Dice P2"]
     vals = [
         rush.avg_vp_colonies_p0,
         rush.avg_vp_dice_p0,
@@ -148,7 +148,7 @@ def plot_pace_colonies(results) -> None:
     ax1.set_title("Game length", color=GOLD, fontsize=12, fontweight="bold")
     ax1.grid(axis="x")
 
-    bots = [f"P0 ({key.p0})", f"P1 ({key.p1})"]
+    bots = [f"Player 1 ({key.p0})", f"Player 2 ({key.p1})"]
     colonies = [
         key.avg_colony_turn_p0 or 0,
         key.avg_colony_turn_p1 or 0,
@@ -175,6 +175,11 @@ def write_summary_json(results) -> None:
     data = {
         "games_per_matchup": GAMES,
         "seed": SEED,
+        "seats": {
+            "player_1": {"cli": "--p0", "index": 0},
+            "player_2": {"cli": "--p1", "index": 1, "setup_bonus_gold": 1},
+            "note": "Win rates are for player_1 (index 0). First roller is higher opening sector, not player_2.",
+        },
         "matchups": [
             {
                 "p0": r.p0,

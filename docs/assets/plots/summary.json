@@ -1,6 +1,18 @@
 {
   "games_per_matchup": 400,
   "seed": 42,
+  "seats": {
+    "player_1": {
+      "cli": "--p0",
+      "index": 0
+    },
+    "player_2": {
+      "cli": "--p1",
+      "index": 1,
+      "setup_bonus_gold": 1
+    },
+    "note": "Win rates are for player_1 (index 0). First roller is higher opening sector, not player_2."
+  },
   "matchups": [
     {
       "p0": "income",

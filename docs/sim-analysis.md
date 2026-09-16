@@ -29,9 +29,9 @@ Charts on [Simulation results](simulation.md) are regenerated on each GitHub Pag
 | “~20 of your turns” / ~20 shared rounds in 2p | `rush` vs `rush`: **median 23** shared rounds, mean **23.2** | **Strong** — inside calibration band 14–24 |
 | Income on 5–8 compounds in 2p | `income` vs `income` is ~50/50 but **slow** (mean **27.8** turns) with heavy leak on both sides | **Partial** — income plan works only with discipline the bot lacks |
 | “Buy vs save” / leak separates strong from average | `income` vs `rush`: income seat leaks **~50** gold/game vs rush **~6**; rush vs income reverses seats | **Strong** — overspend dominates |
-| Red rockets on 5–6 are excellent in 2p | `rush` beats `income` **~74%** when rush is P0 (`income` as P0 wins **23.8%**) | **Strong** for this bot pair |
-| Blue arrow chains are highest ceiling | `chain` is **slightly better vs rush** than pure `income` (**21%** vs **24%** P0 wins) but still loses badly; stub deck limits chain buys | **Partial** — directionally right, not decisive |
-| Closing: colonies at 3g/VP, race math | Rush mirror: **~12 VP** from colonies and **~18 VP** from dice (P0 averages) | **Moderate** — both sources matter; colonies not the whole score |
+| Red rockets on 5–6 are excellent in 2p | `rush` beats `income` **~74%** when rush is Player 1 (`income` as Player 1 wins **23.8%**) | **Strong** for this bot pair |
+| Blue arrow chains are highest ceiling | `chain` is **slightly better vs rush** than pure `income` (**21%** vs **24%** Player 1 wins) but still loses badly; stub deck limits chain buys | **Partial** — directionally right, not decisive |
+| Closing: colonies at 3g/VP, race math | Rush mirror: **~12 VP** from colonies and **~18 VP** from dice (Player 1 averages) | **Moderate** — both sources matter; colonies not the whole score |
 | Hate-draft arrows / deny finishing colonies | Bots use score-based **deny**; no full market denial | **Weak** — heuristic only |
 | Gordon, You Win, swap, dice-fix | **Not in engine** | **Not tested** |
 
@@ -50,9 +50,9 @@ The guide’s “leak” advice is the clearest place where bots diverge from hu
 
 | Matchup | Avg overspend (gold leaked after buys) |
 | ------- | -------------------------------------- |
-| `income` (P0) vs `rush` (P1) | P0 **50.1** · P1 **6.3** |
-| `rush` (P0) vs `income` (P1) | P0 **5.9** · P1 **54.2** |
-| `rush` vs `rush` | P0 **9.6** · P1 **8.7** |
+| `income` (Player 1) vs `rush` (Player 2) | P1 **50.1** · P2 **6.3** |
+| `rush` (Player 1) vs `income` (Player 2) | P1 **5.9** · P2 **54.2** |
+| `rush` vs `rush` | P1 **9.6** · P2 **8.7** |
 
 `rush` passes when buys would waste gold; the income bot still **buys too often** even with pass logic. That is a **bot limitation**, but it matches the guide: an income plan that never passes loses to someone who spends efficiently and races.
 
@@ -60,23 +60,25 @@ Average **passes per game** in `income` vs `rush` are **~10** (income) vs **~12*
 
 ## VP sources at the table
 
-In `rush` vs `rush`, typical P0 scoring splits roughly **12 VP colonies / 18 VP dice** (batch averages). That supports the guide’s closing chapter: you are not only colony-rushing; **dice rewards and rockets** still supply a large share of the 40.
+In `rush` vs `rush`, typical Player 1 scoring splits roughly **12 VP colonies / 18 VP dice** (batch averages). That supports the guide’s closing chapter: you are not only colony-rushing; **dice rewards and rockets** still supply a large share of the 40.
+
+Win rates use **Player 1 / Player 2** seats ([setup](simulation.md#player-seats-not-turn-order)): Player 2 always gets **+1 gold**; mirror matchups are not 50/50.
 
 First colony turn in the income vs rush matchup clusters around **turn 17–18** for both seats — colonies start midgame, not turn 1.
 
 ## Bot matchups (headline rates)
 
-P0 win % from the latest `summary.json`:
+Player 1 win % from the latest `summary.json`:
 
-| P0 | P1 | P0 win % | Notes |
-| -- | -- | -------- | ----- |
+| Bot (P1) | Bot (P2) | P1 win % | Notes |
+| -------- | -------- | -------- | ----- |
 | `rush` | `income` | **74.0** | Rush seat favored |
 | `income` | `rush` | **23.8** | Income leaks ~50 gold/game |
 | `rush` | `random` | **92.8** | |
 | `income` | `random` | **86.5** | Income still beats noise |
 | `rush` | `rush` | **45.0** | Fair mirror |
-| `chain` | `rush` | **21.3** | Slightly worse than `income` as P0 |
-| `rush` | `chain` | **68.3** | Chain leaks more than income as P1 (**~59** gold) |
+| `chain` | `rush` | **21.3** | Slightly worse than `income` as Player 1 |
+| `rush` | `chain` | **68.3** | Chain leaks more as Player 2 (**~59** gold) |
 | `chain` | `income` | **47.8** | Near even; chain a touch faster |
 
 **`snowball` vs `rush`:** near **even** in the latest batch — the guide’s blended plan is viable when encoded as tempo scoring, not “buy every income card.”

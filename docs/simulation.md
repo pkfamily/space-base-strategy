@@ -9,18 +9,33 @@ Batch runs use the [`spacebase2p`](simulator.md) package: base game only, simpli
 
 For interpretation vs the [2p strategy guide](guide/2p-normal.md), see **[Sim vs guide](sim-analysis.md)**.
 
+## Player seats (not turn order)
+
+Stats use **Player 1** and **Player 2** (table-game numbering), not “who rolled first.”
+
+| Label | CLI flag | In the engine |
+| ----- | -------- | ------------- |
+| **Player 1** | `--p0` | Seat index 0 |
+| **Player 2** | `--p1` | Seat index 1, always gets **+1 gold** after the opening buy |
+
+**Who rolls first** on round 1 is separate: whoever drew the **higher-sector** level-1 opening card (tie → Player 1). Player 2 can roll first and still be the seat that got +1 gold.
+
+**Mirror bots** (same bot vs itself) are **not** 50/50 on win rate: Player 2’s setup bonus wins about **55–57%** in long runs (`rush` and `snowball` mirrors). A batch can show something like **38%** for Player 1 in `snowball` vs `snowball` — that is Player 1’s win share in 400 games, not a broken bot. Draws count in the denominator and pull both win rates down slightly.
+
+Charts label the **left bar / first column** as Player 1 and the **right** as Player 2 for each matchup row.
+
 <div class="sb-callout">
   <strong>Headline:</strong> <code>rush</code> still crushes naive <code>income</code>, but <code>snowball</code> (tempo + income) is competitive with rush. Leak discipline matters more than which engine you label.
 </div>
 
 <div class="sb-plot-grid">
   <figure>
-    <img src="{{ '/assets/plots/win_rates.png' | relative_url }}" alt="Bar chart of P0 win rate by bot matchup" />
-    <figcaption>P0 win rate by matchup (dashed line = 50%). Orange highlights income vs rush.</figcaption>
+    <img src="{{ '/assets/plots/win_rates.png' | relative_url }}" alt="Bar chart of Player 1 win rate by bot matchup" />
+    <figcaption>Player 1 win rate by matchup (dashed = 50%; mirrors favor Player 2 — see seats above).</figcaption>
   </figure>
   <figure>
     <img src="{{ '/assets/plots/overspend.png' | relative_url }}" alt="Grouped bar chart of average overspend per player" />
-    <figcaption>Average gold leaked per game when buys spend all credits (orange = P0, teal = P1).</figcaption>
+    <figcaption>Average gold leaked per game (orange = Player 1, teal = Player 2).</figcaption>
   </figure>
   <figure>
     <img src="{{ '/assets/plots/pace_colonies.png' | relative_url }}" alt="Game length and first colony turn for income vs rush" />
@@ -42,8 +57,8 @@ Values are written to [`summary.json`]({{ '/assets/plots/summary.json' | relativ
 
 See [summary.json]({{ '/assets/plots/summary.json' | relative_url }}) for machine-readable output after each deploy.
 
-| P0 | P1 | P0 win % | Draws | Turns | OS P0 | OS P1 |
-| -- | -- | -------- | ----- | ----- | ----- | ----- |
+| Bot (P1) | Bot (P2) | P1 win % | Draws | Turns | OS P1 | OS P2 |
+| -------- | -------- | -------- | ----- | ----- | ----- | ----- |
 | income | rush | 23.8 | 2 | 24.1 | 50.1 | 6.3 |
 | rush | income | 74.0 | 0 | 24.2 | 5.9 | 54.2 |
 | income | income | 45.3 | 1 | 27.1 | 36.7 | 49.4 |
@@ -60,14 +75,10 @@ See [summary.json]({{ '/assets/plots/summary.json' | relative_url }}) for machin
 
 <small>Table from 400-game batch, seed 42 (committed plots). CI regenerates on push.</small>
 
-## Seat (rush mirror)
-
-Separate run: **2000** rush vs rush games — starter wins **~53%**, second seat **~47%** (P2 +1 gold).
-
 ## Caveats
 
 - **Simplified deck**, not the full 132-card ship list.
-- Bots are **heuristic** (income does not yet pass to avoid overspend).
+- Bots are **heuristic** (`income` still leaks; use `snowball` for guide-like tempo).
 - `random` vs `random` can hit the turn cap; the benchmark uses 800 turns.
 
 ```bash

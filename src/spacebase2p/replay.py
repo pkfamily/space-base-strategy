@@ -26,17 +26,17 @@ def run_replay(
     bots = make_bot_pair([p0, p1], rng)
     game = Game.new(bots, seed=seed)
     lines: list[str] = [
-        f"seed={seed}  P0={p0}  P1={p1}  starter=P{game.active}",
+        f"seed={seed}  Player1={p0}  Player2={p1}  first_roller=Player{game.active + 1}",
         "",
     ]
 
     turns = 0
     while not game.is_finished() and turns < max_turns:
         active = game.active
-        lines.append(f"--- Round {game.turn_number}  P{active} to act ---")
+        lines.append(f"--- Round {game.turn_number}  Player {active + 1} to act ---")
         for pidx in range(2):
             p = game.players[pidx]
-            lines.append(f"  P{pidx} before: {p.vp} VP, {p.gold}g, inc {p.income}")
+            lines.append(f"  Player {pidx + 1} before: {p.vp} VP, {p.gold}g, inc {p.income}")
 
         game.play_turn()
         turns += 1
@@ -45,7 +45,7 @@ def run_replay(
             p = game.players[pidx]
             st = game.stats[pidx]
             lines.append(
-                f"  P{pidx} after:  {p.vp} VP, {p.gold}g  "
+                f"  Player {pidx + 1} after:  {p.vp} VP, {p.gold}g  "
                 f"(colony VP {st.vp_from_colonies}, dice VP {st.vp_from_dice}, passes {st.pass_count})"
             )
         lines.append("")
@@ -55,7 +55,9 @@ def run_replay(
 
     if game.is_finished():
         w = game.winner()
-        lines.append(f"GAME OVER  winner=P{w}" if w is not None else "GAME OVER  DRAW")
+        lines.append(
+            f"GAME OVER  winner=Player {w + 1}" if w is not None else "GAME OVER  DRAW"
+        )
     else:
         lines.append("STOPPED (turn cap)")
     return lines
