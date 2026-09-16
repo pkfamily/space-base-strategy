@@ -1,5 +1,17 @@
 # Space Base strategy
 
+## 2-player simulator (`spacebase2p`)
+
+Python package for head-to-head Space Base (base game, no expansions): gold, income, VP, rockets, arrows, colonies; 2p setup (5 gold, random L1, P2 +1). Bots: `income`, `rush`, `random`.
+
+```bash
+pip install -e ".[dev]"
+python3 -m spacebase2p.cli -n 500 --p0 income --p1 rush
+python3 -m pytest
+```
+
+---
+
 Space Base is a race to 40 VP where you build a 12-sector dice engine: on your turn you take blue (station) rewards, and on everyone else’s turn you take red (deployed) rewards. Player count and Light Speed both change which of those two sides actually wins games.
 
 The rest of this is a table guide: shared engine math first, then four complete playbooks.
