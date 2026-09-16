@@ -30,23 +30,23 @@ Charts label the **left bar / first column** as Player 1 and the **right** as Pl
 
 <div class="sb-plot-grid">
   <figure>
-    <img src="{{ '/assets/plots/win_rates.png' | relative_url }}" alt="Bar chart of Player 1 win rate by bot matchup" />
+    <img src="{{ '/assets/plots/win_rates.png' | relative_url }}?v={{ site.plots_version }}" alt="Bar chart of Player 1 win rate by bot matchup" />
     <figcaption>Player 1 win rate by matchup (dashed = 50%; see seats above).</figcaption>
   </figure>
   <figure>
-    <img src="{{ '/assets/plots/overspend.png' | relative_url }}" alt="Grouped bar chart of average overspend per player" />
+    <img src="{{ '/assets/plots/overspend.png' | relative_url }}?v={{ site.plots_version }}" alt="Grouped bar chart of average overspend per player" />
     <figcaption>Average gold leaked per game (orange = Player 1, teal = Player 2).</figcaption>
   </figure>
   <figure>
-    <img src="{{ '/assets/plots/pace_colonies.png' | relative_url }}" alt="Game length and first colony turn for income vs rush" />
+    <img src="{{ '/assets/plots/pace_colonies.png' | relative_url }}?v={{ site.plots_version }}" alt="Game length and first colony turn for income vs rush" />
     <figcaption>Left: average game length. Right: first colony turn in the income vs rush matchup.</figcaption>
   </figure>
   <figure>
-    <img src="{{ '/assets/plots/turn_histogram.png' | relative_url }}" alt="Histogram of game length for rush vs rush" />
+    <img src="{{ '/assets/plots/turn_histogram.png' | relative_url }}?v={{ site.plots_version }}" alt="Histogram of game length for rush vs rush" />
     <figcaption>rush vs rush — shared rounds (dashed = median, dotted ≈ 20-turn 2p target).</figcaption>
   </figure>
   <figure>
-    <img src="{{ '/assets/plots/vp_sources.png' | relative_url }}" alt="VP from colonies vs dice" />
+    <img src="{{ '/assets/plots/vp_sources.png' | relative_url }}?v={{ site.plots_version }}" alt="VP from colonies vs dice" />
     <figcaption>Average VP from colonies vs dice rewards (rush mirror).</figcaption>
   </figure>
 </div>
@@ -73,7 +73,7 @@ See [summary.json]({{ '/assets/plots/summary.json' | relative_url }}) for machin
 | rush | snowball | 40.0 | 4 | 22.6 | 7.0 | 23.0 |
 | snowball | snowball | 46.2 | 4 | 22.6 | 15.7 | 17.3 |
 
-<small>Table from 400-game batch, seed 42 (committed plots). CI regenerates on push.</small>
+<small>Table matches <a href="{{ '/assets/plots/summary.json' | relative_url }}">summary.json</a> from the latest Pages deploy (400 games/matchup, seed 42). If a chart looks stale, hard-refresh or check the table/JSON.</small>
 
 ## Caveats
 

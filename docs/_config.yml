@@ -13,6 +13,9 @@ heading_anchors: true
 
 color_scheme: dark
 
+# Bump when plot PNGs change so browsers reload charts (GitHub Pages caches assets aggressively).
+plots_version: "f946ddd"
+
 plugins:
   - jekyll-remote-theme
   - jekyll-seo-tag
