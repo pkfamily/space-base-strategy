@@ -4,7 +4,8 @@ Strategy guides and a **2-player simulator** for Space Base (base game).
 
 **Read the guides on GitHub Pages:** [pkfamily.github.io/space-base-strategy](https://pkfamily.github.io/space-base-strategy/)
 
-Enable Pages once per repo: **Settings → Pages → Deploy from branch `main` → folder `/docs`**.
+Enable Pages once: **Settings → Pages → Build and deployment → Source: GitHub Actions** (workflow in `.github/workflows/pages.yml`).  
+Alternatively: deploy from branch `main` → `/docs` (same Jekyll site).
 
 ## Simulator
 
