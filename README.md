@@ -6,9 +6,15 @@ The rest of this is a table guide: shared engine math first, then four complete 
 
 ## The rules of the engine (all modes)
 
-**Allocation.** Two d6s. You pick both singles or the sum. Doubles on singles fire the same sector twice. That last point is why sector 6 is the best number in the game.
+**Allocation.** Two d6s. You pick both singles or the sum.
 
-Rough hit rates (singles or sum, no dice fixing):
+- **Doubles** (both dice the same 1–6): that sector fires twice. This is every low sector, not a 6-only trick. Double 4s pay sector 4 twice the same way double 6s pay sector 6 twice.
+- **Two different 1–6 numbers:** taking singles pays both sectors. A 2 and a 5 is two rewards, not one. That is the other way 1–5 double.
+- **Sum:** one reward on 2–12.
+
+Sector 6 still has the highest chance to *hit*. 1–5 are a step behind on frequency, but they get the same double rewards whenever both dice come up as that number, and they pair with the other die for two separate payouts whenever you take singles.
+
+Rough hit rates (singles or sum, no dice fixing; doubles count as two hits on that sector):
 
 | Sector | Hits / 36 | Chance |
 | ------ | --------- | ------ |
@@ -25,7 +31,7 @@ Rough hit rates (singles or sum, no dice fixing):
 | 11     | 2         | 6%     |
 | 12     | 1         | 3%     |
 
-So 1–6 fire constantly and pay small. 7–12 fire rarely and pay huge. Cards are priced around that, but not perfectly: a 6 is noticeably better than a 3 with the same text; an 11 is almost always better than a 12 with similar text.
+So 1–6 fire constantly and pay small. 7–12 fire rarely and pay huge. Cards are priced around that, but not perfectly: a 6 is noticeably better than a 3 with the same text; an 11 is almost always better than a 12 with similar text. Prefer 6 given equal text — just do not treat 1–5 as “cannot double.” They can, whenever both numbers arise.
 
 Buying a ship in a sector deploys whatever was there. That is how red engines get built. Sometimes the right buy is a mediocre new ship whose whole job is to flip a strong red.
 
